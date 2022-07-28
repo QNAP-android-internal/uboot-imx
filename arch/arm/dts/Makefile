@@ -963,6 +963,9 @@ dtb-$(CONFIG_ARCH_IMX8ULP) += \
 	imx8ulp-9x9-evk-i3c.dtb
 
 dtb-$(CONFIG_ARCH_IMX8M) += \
+	imx8mm-evk.dtb \
+	imx8mm-b664-ppc.dtb \
+	imx8mm-evk-qca-wifi.dtb \
 	imx8mm-ddr4-evk.dtb \
 	imx8mm-ddr3l-val.dtb \
 	imx8mm-ddr4-val.dtb \
