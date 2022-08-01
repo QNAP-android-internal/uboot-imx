@@ -9,11 +9,11 @@ DRIVE=/dev/sdX
 #DTBS="fsl-imx8mq-evk"
 #DTBS="pico-imx8m"
 
-BRANCH_VER="lf-5.10.72_2.2.0" #branch used by imx-mkimage and imx-atf under meta-imx
-ATF_BRANCH_VER="lf_v2.4"
-MKIMAGE_SRC_GIT_ID='1112c88470f339dc631e2a7117087f416af6d6b5' #refer to 'imx-mkimage_git.inc' in Yocto
-ATF_SRC_GIT_ID='7a277c8a1a21ff921d217889dde6a9f84e6d2168' #refer to 'imx-atf_2.0.bbappend' in Yocto
-DDR_FW_VER="8.14" #refer to the name of 'firmware-imx-8_8.x.bb'
+BRANCH_VER="lf-5.15.32_2.0.0" #branch used by imx-mkimage and imx-atf under meta-imx
+ATF_BRANCH_VER="lf_v2.6"
+MKIMAGE_SRC_GIT_ID='a8bb8edb45492ac70b33734122a57aa8e38a20bd' #refer to 'imx-mkimage_git.inc' in Yocto
+ATF_SRC_GIT_ID='c6a19b1a351308cc73443283f6aa56b2eff791b8' #refer to 'imx-atf_2.0.bbappend' in Yocto
+DDR_FW_VER="8.16" #refer to the name of 'firmware-imx-8_8.x.bb'
 
 FSL_MIRROR="https://www.nxp.com/lgfiles/NMG/MAD/YOCTO"
 FIRMWARE_DIR="firmware_imx8"
