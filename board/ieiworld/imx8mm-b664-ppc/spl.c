@@ -190,7 +190,7 @@ int board_mmc_getcd(struct mmc *mmc)
 	return 1;
 }
 
-#ifdef CONFIG_POWER
+#if CONFIG_IS_ENABLED(POWER_LEGACY)
 #define I2C_PMIC	0
 #ifdef CONFIG_POWER_PCA9450
 int power_init_board(void)
@@ -198,7 +198,7 @@ int power_init_board(void)
 	struct pmic *p;
 	int ret;
 
-	ret = power_pca9450_init(I2C_PMIC);
+	ret = power_pca9450_init(I2C_PMIC, 0x25);
 	if (ret)
 		printf("power init failed");
 	p = pmic_get("PCA9450");
