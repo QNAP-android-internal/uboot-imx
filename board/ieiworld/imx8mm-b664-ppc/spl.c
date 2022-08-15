@@ -21,11 +21,7 @@
 #include <asm/arch/ddr.h>
 
 #include <power/pmic.h>
-#ifdef CONFIG_POWER_PCA9450
 #include <power/pca9450.h>
-#else
-#include <power/bd71837.h>
-#endif
 #include <asm/mach-imx/gpio.h>
 #include <asm/mach-imx/mxc_i2c.h>
 #include <fsl_esdhc_imx.h>
@@ -192,7 +188,6 @@ int board_mmc_getcd(struct mmc *mmc)
 
 #ifdef CONFIG_POWER
 #define I2C_PMIC	0
-#ifdef CONFIG_POWER_PCA9450
 int power_init_board(void)
 {
 	struct pmic *p;
@@ -227,43 +222,6 @@ int power_init_board(void)
 
 	return 0;
 }
-#else
-int power_init_board(void)
-{
-	struct pmic *p;
-	int ret;
-
-	ret = power_bd71837_init(I2C_PMIC);
-	if (ret)
-		printf("power init failed");
-
-	p = pmic_get("BD71837");
-	pmic_probe(p);
-
-
-	/* decrease RESET key long push time from the default 10s to 10ms */
-	pmic_reg_write(p, BD718XX_PWRONCONFIG1, 0x0);
-
-	/* unlock the PMIC regs */
-	pmic_reg_write(p, BD718XX_REGLOCK, 0x1);
-
-	/* increase VDD_SOC to typical value 0.85v before first DRAM access */
-	pmic_reg_write(p, BD718XX_BUCK1_VOLT_RUN, 0x0f);
-
-	/* increase VDD_DRAM to 0.975v for 3Ghz DDR */
-	pmic_reg_write(p, BD718XX_1ST_NODVS_BUCK_VOLT, 0x83);
-
-#ifndef CONFIG_IMX8M_LPDDR4
-	/* increase NVCC_DRAM_1V2 to 1.2v for DDR4 */
-	pmic_reg_write(p, BD718XX_4TH_NODVS_BUCK_VOLT, 0x28);
-#endif
-
-	/* lock the PMIC regs */
-	pmic_reg_write(p, BD718XX_REGLOCK, 0x11);
-
-	return 0;
-}
-#endif
 #endif
 
 void spl_board_init(void)
