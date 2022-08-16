@@ -298,7 +298,7 @@
 #endif
 
 #ifdef CONFIG_ANDROID_SUPPORT
-#include "imx8mm_evk_android.h"
+#include "imx8mm-b664-ppc_android.h"
 #endif
 
 #endif
