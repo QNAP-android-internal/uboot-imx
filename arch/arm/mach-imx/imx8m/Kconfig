@@ -207,6 +207,15 @@ config TARGET_IMX8MN_DDR3_EVK
 	select FSL_BLOB
 	select SPL_CRYPTO if SPL
 
+config TARGET_IMX8MP_B643_PPC
+	bool "imx8mm B643 Panel PC"
+	select IMX8MP
+	select SUPPORT_SPL
+	select IMX8M_LPDDR4
+	select FSL_CAAM
+	select FSL_BLOB
+	select SPL_CRYPTO if SPL
+
 config TARGET_IMX8MN_AB2
 	bool "imx8mn LPDDR4 Audio board 2.0"
 	select IMX8MN
@@ -363,6 +372,7 @@ source "board/freescale/imx8mq_val/Kconfig"
 source "board/freescale/imx8mm_ab2/Kconfig"
 source "board/freescale/imx8mm_evk/Kconfig"
 source "board/ieiworld/imx8mm-b664-ppc/Kconfig"
+source "board/ieiworld/imx8mp-b643-ppc/Kconfig"
 source "board/freescale/imx8mm_val/Kconfig"
 source "board/freescale/imx8mn_evk/Kconfig"
 source "board/freescale/imx8mp_evk/Kconfig"
