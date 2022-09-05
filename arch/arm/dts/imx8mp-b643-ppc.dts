@@ -146,6 +146,26 @@
 	};
 };
 
+&gpio1 {
+	dsi_bl_en {
+		gpio-hog;
+		gpios = <7 GPIO_ACTIVE_HIGH>;
+		line-name = "dsi_bl_en";
+		output-high;
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_mipi_dsi_bl_en>;
+	};
+
+	dp_rst {
+		gpio-hog;
+		gpios = <8 GPIO_ACTIVE_HIGH>;
+		line-name = "dsi_en";
+		output-high;
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_mipi_dsi_en>;
+	};
+};
+
 &i2c1 {
 	clock-frequency = <400000>;
 	pinctrl-names = "default", "gpio";
@@ -485,6 +505,12 @@
 		fsl,pins = <
 			MX8MP_IOMUXC_I2C3_SCL__GPIO5_IO18        	0x1c3
 			MX8MP_IOMUXC_I2C3_SDA__GPIO5_IO19        	0x1c3
+		>;
+	};
+
+	pinctrl_mipi_dsi_bl_en: mipi_dsi_bl_en {
+		fsl,pins = <
+			MX8MP_IOMUXC_GPIO1_IO07__GPIO1_IO07	0x16
 		>;
 	};
 
