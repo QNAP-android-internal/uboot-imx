@@ -22,6 +22,22 @@
 	"splashimage=0x50000000\0"		\
 	"fdt_high=0xffffffffffffffff\0"		\
 	"initrd_high=0xffffffffffffffff\0"	\
+	"bootargs="				\
+		"stack_depot_disable=on "		\
+		"kasan.stacktrace=off "			\
+		"kvm-arm.mode=protected "		\
+		"cgroup_disable=pressure "		\
+		"cgroup.memory=nokmem "			\
+		"console=ttymxc1,115200 "		\
+		"earlycon=ec_imx6q,0x30890000,115200 "	\
+		"init=/init "				\
+		"firmware_class.path=/vendor/firmware "	\
+		"loop.max_part=7 "			\
+		"transparent_hugepage=never "		\
+		"cma=800M@0x400M-0xb80M "		\
+		"bootconfig "				\
+		"buildvariant=userdebug "		\
+		"quiet\0"
 
 /* Enable mcu firmware flash */
 #ifdef CONFIG_FLASH_MCUFIRMWARE_SUPPORT
