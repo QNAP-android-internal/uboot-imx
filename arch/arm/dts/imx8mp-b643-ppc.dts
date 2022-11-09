@@ -164,6 +164,15 @@
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_mipi_dsi_en>;
 	};
+
+	touch_rst {
+		gpio-hog;
+		gpios = <10 GPIO_ACTIVE_HIGH>;
+		line-name = "touch_en";
+		output-high;
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_touch_rst>;
+	};
 };
 
 &i2c1 {
@@ -517,6 +526,12 @@
 	pinctrl_mipi_dsi_en: mipi_dsi_en {
 		fsl,pins = <
 			MX8MP_IOMUXC_GPIO1_IO08__GPIO1_IO08	0x16
+		>;
+	};
+
+	pinctrl_touch_rst: touch_rst {
+		fsl,pins = <
+			MX8MP_IOMUXC_GPIO1_IO10__GPIO1_IO10	0x16
 		>;
 	};
 
