@@ -35,6 +35,12 @@
 	"pci=nomsi "					\
 	"cma=1184M@0x400M-0x1000M "		\
 	"bootconfig "					\
+	"androidboot.console=ttymxc1 "	\
+	"androidboot.hardware=nxp "		\
+	"androidboot.lcd_density=240 "	\
+	"androidboot.primary_display=imx-drm "	\
+	"androidboot.displaymode=1080p "	\
+	"androidboot.wificountrycode=CN "	\
 	"buildvariant=userdebug "		\
 	"androidboot.hwrotation=90\0"
 
