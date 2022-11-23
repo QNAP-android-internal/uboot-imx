@@ -17,11 +17,27 @@
 #undef CONFIG_EXTRA_ENV_SETTINGS
 #undef CONFIG_BOOTCOMMAND
 
+#define PANEL_ENV_SETTINGS \
+	"panelargs=" \
+		"if test $dtoverlay = dsi-tq101aj02; then " \
+			"setenv panel_rot 90; " \
+		"else " \
+			"setenv panel_rot 0; " \
+		"fi; " \
+		"setenv bootargs ${bootargs} " \
+		"androidboot.lcd_density=240 " \
+		"androidboot.hwrotation=${panel_rot}; \0"
+
 #define CONFIG_EXTRA_ENV_SETTINGS		\
+	PANEL_ENV_SETTINGS	\
+	"bootcmd=" \
+	"run panelargs; " \
+	"boota "__stringify(FSL_FASTBOOT_FB_DEV)"2\0" \
 	"splashpos=m,m\0"			\
 	"splashimage=0x50000000\0"		\
 	"fdt_high=0xffffffffffffffff\0"		\
 	"initrd_high=0xffffffffffffffff\0"	\
+	"dtoverlay=no_overlay\0"	\
 	"bootargs="	\
 	"stack_depot_disable=on "	\
 	"kasan.stacktrace=off "		\
@@ -37,12 +53,10 @@
 	"bootconfig "					\
 	"androidboot.console=ttymxc1 "	\
 	"androidboot.hardware=nxp "		\
-	"androidboot.lcd_density=240 "	\
 	"androidboot.primary_display=imx-drm "	\
 	"androidboot.displaymode=1080p "	\
 	"androidboot.wificountrycode=CN "	\
-	"buildvariant=userdebug "		\
-	"androidboot.hwrotation=90\0"
+	"buildvariant=userdebug\0"		\
 
 /* Enable mcu firmware flash */
 #ifdef CONFIG_FLASH_MCUFIRMWARE_SUPPORT
