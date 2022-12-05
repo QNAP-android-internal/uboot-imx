@@ -173,6 +173,26 @@
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_touch_rst>;
 	};
+
+	wifi_pwr {
+		gpio-hog;
+		gpios = <11 GPIO_ACTIVE_LOW>;
+		line-name = "wifi_pwr";
+		output-high;
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_wifi_module_power>;
+	};
+};
+
+&gpio2 {
+	wifi_regon {
+		gpio-hog;
+		gpios = <10 GPIO_ACTIVE_HIGH>;
+		line-name = "wifi_regon";
+		output-high;
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_wifi_regon>;
+	};
 };
 
 &i2c1 {
@@ -665,6 +685,18 @@
 	pinctrl_wdog: wdoggrp {
 		fsl,pins = <
 			MX8MP_IOMUXC_GPIO1_IO02__WDOG1_WDOG_B	0xc6
+		>;
+	};
+
+	pinctrl_wifi_module_power: mipi_wifi_module_power {
+		fsl,pins = <
+			MX8MP_IOMUXC_GPIO1_IO11__GPIO1_IO11		0x41 // reset
+		>;
+	};
+
+	pinctrl_wifi_regon: mipi_wifi_regon {
+		fsl,pins = <
+			MX8MP_IOMUXC_SD1_RESET_B__GPIO2_IO10		0x41
 		>;
 	};
 };
