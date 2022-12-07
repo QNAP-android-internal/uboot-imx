@@ -56,7 +56,8 @@
 	"androidboot.primary_display=imx-drm "	\
 	"androidboot.displaymode=1080p "	\
 	"androidboot.wificountrycode=CN "	\
-	"buildvariant=userdebug\0"		\
+	"buildvariant=userdebug "		\
+	"quiet\0"
 
 /* Enable mcu firmware flash */
 #ifdef CONFIG_FLASH_MCUFIRMWARE_SUPPORT
