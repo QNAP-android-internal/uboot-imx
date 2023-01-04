@@ -37,6 +37,8 @@
 		"cma=800M@0x400M-0xb80M "		\
 		"bootconfig "				\
 		"buildvariant=userdebug "		\
+		"fbcon=logo-pos:center "		\
+		"fbcon=logo-count:1 "			\
 		"quiet\0"
 
 /* Enable mcu firmware flash */
