@@ -72,6 +72,8 @@ enum overlay_type {
 	NO_OVERLAY = 0,
 #if defined(CONFIG_TARGET_IMX8MP_B643_PPC)
 	DSI_10_TQ101AJ02_8MP = 1,
+	UART_RS422_8MP = 2,
+	UART_RS485_8MP = 3,
 #elif defined(CONFIG_TARGET_IMX8MM_B664_PPC)
 	EDP_13_G133HAN020_8MM = 1,
 #endif
@@ -1086,7 +1088,7 @@ int do_boota(struct cmd_tbl *cmdtp, int flag, int argc, char * const argv[]) {
 	struct dt_table_entry *dt_entry_overlay = NULL;
 	enum overlay_type dtbo_idx = NO_OVERLAY;
 	u32 fdt_overlay_size = 0;
-	int ret;
+	int err = 0;
 	char overlay_name[] = {0};
 	char *overlay_name_ptr = NULL, *dtbo_token = NULL;
 
@@ -1099,6 +1101,10 @@ int do_boota(struct cmd_tbl *cmdtp, int flag, int argc, char * const argv[]) {
 #if defined(CONFIG_TARGET_IMX8MP_B643_PPC)
 		if (strcmp(dtbo_token, "dsi-tq101aj02") == 0) {
 			dtbo_idx = DSI_10_TQ101AJ02_8MP;
+		} else if (strcmp(dtbo_token, "uart-rs422") == 0) {
+			dtbo_idx = UART_RS422_8MP;
+		} else if (strcmp(dtbo_token, "uart-rs485") == 0) {
+			dtbo_idx = UART_RS485_8MP;
 #elif defined(CONFIG_TARGET_IMX8MM_B664_PPC)
 		if (strcmp(dtbo_token, "edp-g133han020") == 0) {
 			dtbo_idx = EDP_13_G133HAN020_8MM;
@@ -1106,8 +1112,6 @@ int do_boota(struct cmd_tbl *cmdtp, int flag, int argc, char * const argv[]) {
 		} else {
 			dtbo_idx = NO_OVERLAY;
 		}
-
-		dtbo_token = strtok(NULL, " ");
 
 		if( dtbo_idx != NO_OVERLAY ) {
 			dt_entry_overlay = (struct dt_table_entry *)((ulong)dt_img +
@@ -1117,19 +1121,21 @@ int do_boota(struct cmd_tbl *cmdtp, int flag, int argc, char * const argv[]) {
 			dtbo_addr = fdt_addr + 0xF0000;
 			memcpy((void *)(ulong)dtbo_addr, (void *)((ulong)dt_img +
 			be32_to_cpu(dt_entry_overlay->dt_offset)), fdt_overlay_size);
-			fdt_increase_size((void *)(ulong)fdt_addr, fdt_overlay_size);
+			err = fdt_increase_size((void *)(ulong)fdt_addr, fdt_overlay_size);
 
-			if(!ret)
-				printf("ANDROID: fdt increase OK\n");
+			if(!err)
+				printf("%s: fdt increase OK\n", dtbo_token);
 			else
-				printf("ANDROID: fdt increase failed, ret=%d\n", ret);
+				printf("%s: fdt increase failed, err=%d\n", dtbo_token, err);
 
-			fdt_overlay_apply((void *)fdt_addr, (void *)dtbo_addr);
-			if(!ret)
-				printf("ANDROID: fdt overlay OK\n");
+			err = fdt_overlay_apply((void *)fdt_addr, (void *)dtbo_addr);
+			if(!err)
+				printf("%s: fdt overlay OK\n", dtbo_token);
 			else
-				printf("ANDROID: fdt overlay failed, ret=%d\n", ret);
+				printf("%s: fdt overlay failed, err=%d\n", dtbo_token, err);
 		}
+
+		dtbo_token = strtok(NULL, " ");
 	}
 
 	/* Dump image info */
