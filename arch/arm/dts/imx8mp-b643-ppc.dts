@@ -195,6 +195,26 @@
 	};
 };
 
+&gpio4 {
+	fec_rst {
+		gpio-hog;
+		gpios = <2 GPIO_ACTIVE_HIGH>;
+		line-name = "fec_rst";
+		output-high;
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_fec_rst>;
+	};
+
+	eqos_rst {
+		gpio-hog;
+		gpios = <22 GPIO_ACTIVE_HIGH>;
+		line-name = "eqos_rst";
+		output-high;
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_eqos_rst>;
+	};
+};
+
 &i2c1 {
 	clock-frequency = <400000>;
 	pinctrl-names = "default", "gpio";
@@ -420,7 +440,6 @@
 			MX8MP_IOMUXC_ENET_TD3__ENET_QOS_RGMII_TD3		0x1f
 			MX8MP_IOMUXC_ENET_TX_CTL__ENET_QOS_RGMII_TX_CTL	0x1f
 			MX8MP_IOMUXC_ENET_TXC__CCM_ENET_QOS_CLOCK_GENERATE_TX_CLK	0x1f
-			MX8MP_IOMUXC_SAI2_RXC__GPIO4_IO22		0x19
 		>;
 	};
 
@@ -440,7 +459,6 @@
 			MX8MP_IOMUXC_SAI1_TXD3__ENET1_RGMII_TD3		0x1f
 			MX8MP_IOMUXC_SAI1_TXD4__ENET1_RGMII_TX_CTL	0x1f
 			MX8MP_IOMUXC_SAI1_TXD5__ENET1_RGMII_TXC		0x1f
-			MX8MP_IOMUXC_SAI1_RXD0__GPIO4_IO02		0x19
 		>;
 	};
 
@@ -689,6 +707,18 @@
 	pinctrl_wifi_regon: mipi_wifi_regon {
 		fsl,pins = <
 			MX8MP_IOMUXC_SD1_RESET_B__GPIO2_IO10		0x41
+		>;
+	};
+
+	pinctrl_eqos_rst: eqos_rst {
+		fsl,pins = <
+			MX8MP_IOMUXC_SAI2_RXC__GPIO4_IO22		0x41
+		>;
+	};
+
+	pinctrl_fec_rst: fec_rst {
+		fsl,pins = <
+			MX8MP_IOMUXC_SAI1_RXD0__GPIO4_IO02		0x41
 		>;
 	};
 };
