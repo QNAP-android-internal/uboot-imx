@@ -36,6 +36,7 @@
 		"transparent_hugepage=never "		\
 		"cma=800M@0x400M-0xb80M "		\
 		"bootconfig "				\
+		"androidboot.wificountrycode=CN "       \
 		"buildvariant=userdebug "		\
 		"fbcon=logo-pos:center "		\
 		"fbcon=logo-count:1 "			\
