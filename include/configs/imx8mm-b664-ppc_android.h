@@ -34,7 +34,7 @@
 		"firmware_class.path=/vendor/firmware "	\
 		"loop.max_part=7 "			\
 		"transparent_hugepage=never "		\
-		"cma=800M@0x400M-0xb80M "		\
+		"cma=550M@0x400M-0xb80M "		\
 		"bootconfig "				\
 		"androidboot.wificountrycode=CN "       \
 		"buildvariant=userdebug "		\
