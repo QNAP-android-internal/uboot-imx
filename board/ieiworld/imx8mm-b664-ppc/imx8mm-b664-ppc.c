@@ -88,16 +88,6 @@ int board_early_init_f(void)
 	return 0;
 }
 
-int board_phys_sdram_size(phys_size_t *size)
-{
-	if (!size)
-		return -EINVAL;
-
-	*size = SZ_4G;
-
-	return 0;
-}
-
 #if IS_ENABLED(CONFIG_FEC_MXC)
 static int setup_fec(void)
 {
