@@ -18,6 +18,9 @@
 #undef CONFIG_BOOTCOMMAND
 
 #define CONFIG_EXTRA_ENV_SETTINGS		\
+	"bootcmd=" \
+	"saveenv; " \
+	"boota "__stringify(FSL_FASTBOOT_FB_DEV)"2\0" \
 	"splashpos=m,m\0"			\
 	"splashimage=0x50000000\0"		\
 	"fdt_high=0xffffffffffffffff\0"		\
