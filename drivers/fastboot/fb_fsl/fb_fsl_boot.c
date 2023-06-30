@@ -18,9 +18,7 @@
 #include <asm/arch/sys_proto.h>
 #include <asm/setup.h>
 #include <env.h>
-#include <lz4.h>
-#include <fdt_support.h>
-#include <linux/libfdt.h>
+#include <u-boot/lz4.h>
 #include <linux/delay.h>
 #include "../lib/avb/fsl/utils.h"
 
@@ -66,15 +64,6 @@ boot_metric metrics = {
   .odt	 = 0,
   .sw	 = 0
 };
-
-#ifdef CONFIG_OF_LIBFDT_OVERLAY
-enum overlay_type {
-	NO_OVERLAY = 0,
-#if defined(CONFIG_TARGET_IMX8MP_B643_PPC)
-	DSI_10_TQ101AJ02_8MP = 1,
-#endif
-};
-#endif
 
 int read_from_partition_multi(const char* partition,
 		int64_t offset, size_t num_bytes, void* buffer, size_t* out_num_read)
@@ -1080,58 +1069,11 @@ int do_boota(struct cmd_tbl *cmdtp, int flag, int argc, char * const argv[]) {
 		}
 	}
 
-	ulong *dtbo_addr = NULL;
-	struct dt_table_entry *dt_entry_overlay = NULL;
-	enum overlay_type dtbo_idx = NO_OVERLAY;
-	u32 fdt_overlay_size = 0;
-	int ret;
-	char overlay_name[] = {0};
-	char *overlay_name_ptr = NULL, *dtbo_token = NULL;
-
-	overlay_name_ptr = env_get("dtoverlay");
-	sprintf(overlay_name, "%s", overlay_name_ptr);
-	dtbo_token = strtok(overlay_name, " ");
-
-	while(dtbo_token != NULL) {
-
-#if defined(CONFIG_TARGET_IMX8MP_B643_PPC)
-		if (strcmp(dtbo_token, "dsi-tq101aj02") == 0) {
-			dtbo_idx = DSI_10_TQ101AJ02_8MP;
-#endif
-		} else {
-			dtbo_idx = NO_OVERLAY;
-		}
-
-		dtbo_token = strtok(NULL, " ");
-
-		if( dtbo_idx != NO_OVERLAY ) {
-			dt_entry_overlay = (struct dt_table_entry *)((ulong)dt_img +
-			be32_to_cpu(dt_img->dt_entries_offset) + (u32)dtbo_idx * be32_to_cpu(dt_img->dt_entry_size));
-
-			fdt_overlay_size = be32_to_cpu(dt_entry_overlay->dt_size);
-			dtbo_addr = fdt_addr + 0xF0000;
-			memcpy((void *)(ulong)dtbo_addr, (void *)((ulong)dt_img +
-			be32_to_cpu(dt_entry_overlay->dt_offset)), fdt_overlay_size);
-			fdt_increase_size((void *)(ulong)fdt_addr, fdt_overlay_size);
-
-			if(!ret)
-				printf("ANDROID: fdt increase OK\n");
-			else
-				printf("ANDROID: fdt increase failed, ret=%d\n", ret);
-
-			fdt_overlay_apply((void *)fdt_addr, (void *)dtbo_addr);
-			if(!ret)
-				printf("ANDROID: fdt overlay OK\n");
-			else
-				printf("ANDROID: fdt overlay failed, ret=%d\n", ret);
-		}
-	}
-
 	/* Dump image info */
 	printf("kernel   @ %08x (%d)\n", (uint32_t)kernel_addr, kernel_image_size);
 	printf("ramdisk  @ %08x (%d)\n", (uint32_t)ramdisk_addr, ramdisk_size);
 	if (fdt_size)
-		printf("fdt      @ %08x (%d)\n", fdt_addr, fdt_size + fdt_overlay_size);
+		printf("fdt      @ %08x (%d)\n", fdt_addr, fdt_size);
 
 	/* Set boot parameters */
 	char boot_addr_start[12];
