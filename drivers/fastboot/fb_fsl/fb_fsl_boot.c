@@ -18,6 +18,7 @@
 #include <asm/arch/sys_proto.h>
 #include <asm/setup.h>
 #include <env.h>
+#include <lz4.h>
 #include <fdt_support.h>
 #include <linux/libfdt.h>
 #include <linux/delay.h>
