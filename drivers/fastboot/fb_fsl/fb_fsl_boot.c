@@ -72,8 +72,6 @@ enum overlay_type {
 	NO_OVERLAY = 0,
 #if defined(CONFIG_TARGET_IMX8MP_B643_PPC)
 	DSI_10_TQ101AJ02_8MP = 1,
-#elif defined(CONFIG_TARGET_IMX8MM_B664_PPC)
-	EDP_13_G133HAN020_8MM = 1,
 #endif
 };
 #endif
@@ -1099,9 +1097,6 @@ int do_boota(struct cmd_tbl *cmdtp, int flag, int argc, char * const argv[]) {
 #if defined(CONFIG_TARGET_IMX8MP_B643_PPC)
 		if (strcmp(dtbo_token, "dsi-tq101aj02") == 0) {
 			dtbo_idx = DSI_10_TQ101AJ02_8MP;
-#elif defined(CONFIG_TARGET_IMX8MM_B664_PPC)
-		if (strcmp(dtbo_token, "edp-g133han020") == 0) {
-			dtbo_idx = EDP_13_G133HAN020_8MM;
 #endif
 		} else {
 			dtbo_idx = NO_OVERLAY;
