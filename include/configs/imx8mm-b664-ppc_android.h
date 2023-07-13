@@ -14,18 +14,7 @@
 
 #define CONFIG_EXTRA_ENV_SETTINGS		\
 	"bootcmd=" \
-	"setenv bootargs ${bootargs} " \
-	"leds-tlc591xx.suspend_color=${leds.suspend_color} " \
-	"leds-tlc591xx.poweroff_state=${leds.poweroff_state};" \
-	"saveenv; " \
-	"boota "__stringify(FSL_FASTBOOT_FB_DEV)"2\0" \
-	"splashpos=m,m\0"			\
-	"splashimage=0x50000000\0"		\
-	"fdt_high=0xffffffffffffffff\0"		\
-	"initrd_high=0xffffffffffffffff\0"	\
-	"leds.suspend_color=blue\0"	\
-	"leds.poweroff_state=on\0"	\
-	"bootargs="				\
+	"setenv bootargs " \
 		"stack_depot_disable=on "		\
 		"kasan.stacktrace=off "			\
 		"kvm-arm.mode=protected "		\
@@ -43,7 +32,17 @@
 		"buildvariant=userdebug "		\
 		"fbcon=logo-pos:center "		\
 		"fbcon=logo-count:1 "			\
-		"quiet\0"
+		"quiet "						\
+		"leds-tlc591xx.suspend_color=${leds.suspend_color} " \
+		"leds-tlc591xx.poweroff_state=${leds.poweroff_state};" \
+	"saveenv; " \
+	"boota "__stringify(FSL_FASTBOOT_FB_DEV)"2\0" \
+	"splashpos=m,m\0"			\
+	"splashimage=0x50000000\0"		\
+	"fdt_high=0xffffffffffffffff\0"		\
+	"initrd_high=0xffffffffffffffff\0"	\
+	"leds.suspend_color=blue\0"	\
+	"leds.poweroff_state=on\0"
 
 /* Enable mcu firmware flash */
 #ifdef CONFIG_FLASH_MCUFIRMWARE_SUPPORT
