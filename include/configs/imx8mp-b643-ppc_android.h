@@ -21,11 +21,13 @@
 	"panelargs=" \
 		"if test $dtoverlay = dsi-tq101aj02; then " \
 			"setenv panel_rot 90; " \
+			"setenv panel_density 240; " \
 		"else " \
 			"setenv panel_rot 0; " \
+			"setenv panel_density 320; " \
 		"fi; " \
 		"setenv bootargs ${bootargs} " \
-		"androidboot.lcd_density=240 " \
+		"androidboot.lcd_density=${panel_density} " \
 		"androidboot.hwrotation=${panel_rot}; \0"
 
 #define CONFIG_EXTRA_ENV_SETTINGS		\
