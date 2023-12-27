@@ -126,6 +126,8 @@
 	CONFIG_MFG_ENV_SETTINGS \
 	BOOTENV \
 	JAILHOUSE_ENV \
+	"bootcmd=" \
+	"saveenv; run distro_bootcmd; run bsp_bootcmd;\0" \
 	"codec_quirk=snd-soc-rt5670.quirk=0x20d\0" \
 	"scriptaddr=0x43500000\0" \
 	"kernel_addr_r=" __stringify(CONFIG_LOADADDR) "\0" \
