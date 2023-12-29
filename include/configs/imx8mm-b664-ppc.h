@@ -126,8 +126,6 @@
 	CONFIG_MFG_ENV_SETTINGS \
 	BOOTENV \
 	JAILHOUSE_ENV \
-	"bootcmd=" \
-	"saveenv; run distro_bootcmd; run bsp_bootcmd;\0" \
 	"codec_quirk=snd-soc-rt5670.quirk=0x20d\0" \
 	"scriptaddr=0x43500000\0" \
 	"kernel_addr_r=" __stringify(CONFIG_LOADADDR) "\0" \
@@ -145,7 +143,18 @@
 	"mmcpart=1\0" \
 	"mmcroot=" CONFIG_MMCROOT " rootwait rw\0" \
 	"mmcautodetect=yes\0" \
-	"mmcargs=setenv bootargs ${jh_clk} console=${console} root=${mmcroot} ${codec_quirk}\0 " \
+	"mmcargs=" \
+		"setenv bootargs " \
+		"${jh_clk} " \
+		"console=${console} " \
+		"root=${mmcroot} " \
+		"${codec_quirk} " \
+		"leds-tlc591xx.suspend_color=${leds.suspend_color} " \
+		"leds-tlc591xx.poweroff_state=${leds.poweroff_state};\0" \
+	"bootcmd=" \
+	"run mmcargs; saveenv; run distro_bootcmd; run bsp_bootcmd;\0" \
+	"leds.suspend_color=blue\0" \
+	"leds.poweroff_state=on\0" \
 	"loadbootscript=fatload mmc ${mmcdev}:${mmcpart} ${loadaddr} ${bsp_script};\0" \
 	"bootscript=echo Running bootscript from mmc ...; " \
 		"source\0" \
