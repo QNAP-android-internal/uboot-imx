@@ -14,7 +14,7 @@
 #define CONFIG_SYS_MALLOC_LEN           (32 * SZ_1M)
 #endif
 
-#undef CONFIG_EXTRA_ENV_SETTINGS
+#undef CFG_EXTRA_ENV_SETTINGS
 #undef CONFIG_BOOTCOMMAND
 
 #define PANEL_ENV_SETTINGS \
@@ -30,7 +30,7 @@
 		"androidboot.lcd_density=${panel_density} " \
 		"androidboot.hwrotation=${panel_rot}; \0"
 
-#define CONFIG_EXTRA_ENV_SETTINGS		\
+#define CFG_EXTRA_ENV_SETTINGS		\
 	PANEL_ENV_SETTINGS	\
 	"bootcmd=" \
 	"run panelargs; " \
@@ -72,16 +72,13 @@
 #define ANDROID_MCU_FIRMWARE_HEADER_STACK 0x20020000
 #endif
 
-#ifdef CONFIG_DUAL_BOOTLOADER
-#define CONFIG_SYS_SPL_PTE_RAM_BASE    0x41580000
+#define CFG_SYS_SPL_PTE_RAM_BASE    0x41580000
 
 #ifdef CONFIG_IMX_TRUSTY_OS
 #define BOOTLOADER_RBIDX_OFFSET  0x3FE000
 #define BOOTLOADER_RBIDX_START   0x3FF000
 #define BOOTLOADER_RBIDX_LEN     0x08
 #define BOOTLOADER_RBIDX_INITVAL 0
-#endif
-
 #endif
 
 #ifdef CONFIG_IMX_TRUSTY_OS
