@@ -9,10 +9,10 @@
 
 #define FSL_FASTBOOT_FB_DEV "mmc"
 
-#undef CONFIG_EXTRA_ENV_SETTINGS
+#undef CFG_EXTRA_ENV_SETTINGS
 #undef CONFIG_BOOTCOMMAND
 
-#define CONFIG_EXTRA_ENV_SETTINGS		\
+#define CFG_EXTRA_ENV_SETTINGS		\
 	"bootcmd=" \
 	"setenv bootargs " \
 		"stack_depot_disable=on "		\
@@ -26,7 +26,7 @@
 		"firmware_class.path=/vendor/firmware "	\
 		"loop.max_part=7 "			\
 		"transparent_hugepage=never "		\
-		"cma=550M@0x400M-0xb80M "		\
+		"cma=800M@0x400M-0xb80M "		\
 		"bootconfig "				\
 		"androidboot.wificountrycode=CN "       \
 		"buildvariant=userdebug "		\
@@ -53,7 +53,7 @@
 #define ANDROID_MCU_FIRMWARE_HEADER_STACK 0x20020000
 #endif
 
-#define CONFIG_SYS_SPL_PTE_RAM_BASE    0x41580000
+#define CFG_SYS_SPL_PTE_RAM_BASE    0x41580000
 
 #ifdef CONFIG_IMX_TRUSTY_OS
 #define BOOTLOADER_RBIDX_OFFSET  0x3FE000
@@ -69,5 +69,4 @@
 #define NS_ARCH_ARM64 1
 
 #endif
-
 #endif
