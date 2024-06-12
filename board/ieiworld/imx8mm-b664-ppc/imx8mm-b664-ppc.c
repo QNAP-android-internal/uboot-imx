@@ -329,7 +329,7 @@ int ft_board_setup(void *blob, struct bd_info *bd)
 #ifdef CONFIG_ANDROID_SUPPORT
 	int rc;
 	phys_addr_t ecc0_start = 0xc0000000;
-	size_t ecc_size = 0x30000000;
+	size_t ecc_size = 0x40000000;
 
 	rc = add_res_mem_dt_node(blob, "ecc", ecc0_start, ecc_size);
 	if (rc < 0) {
