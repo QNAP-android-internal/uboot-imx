@@ -256,72 +256,72 @@
 };
 
 &gpio1 {
-	dsi_bl_en {
-		gpio-hog;
-		gpios = <7 GPIO_ACTIVE_HIGH>;
-		line-name = "dsi_bl_en";
-		output-high;
-		pinctrl-names = "default";
-		pinctrl-0 = <&pinctrl_mipi_dsi_bl_en>;
-	};
+    dsi_bl_en {
+        gpio-hog;
+        gpios = <7 GPIO_ACTIVE_HIGH>;
+        line-name = "dsi_bl_en";
+        output-high;
+        pinctrl-names = "default";
+        pinctrl-0 = <&pinctrl_mipi_dsi_bl_en>;
+    };
 
-	dp_rst {
-		gpio-hog;
-		gpios = <8 GPIO_ACTIVE_HIGH>;
-		line-name = "dsi_en";
-		output-high;
-		pinctrl-names = "default";
-		pinctrl-0 = <&pinctrl_mipi_dsi_en>;
-	};
+    dp_rst {
+        gpio-hog;
+        gpios = <8 GPIO_ACTIVE_HIGH>;
+        line-name = "dsi_en";
+        output-high;
+        pinctrl-names = "default";
+        pinctrl-0 = <&pinctrl_mipi_dsi_en>;
+    };
 
-	touch_rst {
-		gpio-hog;
-		gpios = <10 GPIO_ACTIVE_HIGH>;
-		line-name = "touch_en";
-		output-high;
-		pinctrl-names = "default";
-		pinctrl-0 = <&pinctrl_touch_rst>;
-	};
+    touch_rst {
+        gpio-hog;
+        gpios = <10 GPIO_ACTIVE_HIGH>;
+        line-name = "touch_en";
+        output-high;
+        pinctrl-names = "default";
+        pinctrl-0 = <&pinctrl_touch_rst>;
+    };
 
-	wifi_pwr {
-		gpio-hog;
-		gpios = <11 GPIO_ACTIVE_LOW>;
-		line-name = "wifi_pwr";
-		output-high;
-		pinctrl-names = "default";
-		pinctrl-0 = <&pinctrl_wifi_module_power>;
-	};
+    wifi_pwr {
+        gpio-hog;
+        gpios = <11 GPIO_ACTIVE_LOW>;
+        line-name = "wifi_pwr";
+        output-high;
+        pinctrl-names = "default";
+        pinctrl-0 = <&pinctrl_wifi_module_power>;
+    };
 };
 
 &gpio2 {
-	wifi_regon {
-		gpio-hog;
-		gpios = <10 GPIO_ACTIVE_HIGH>;
-		line-name = "wifi_regon";
-		output-high;
-		pinctrl-names = "default";
-		pinctrl-0 = <&pinctrl_wifi_regon>;
-	};
+    wifi_regon {
+        gpio-hog;
+        gpios = <10 GPIO_ACTIVE_HIGH>;
+        line-name = "wifi_regon";
+        output-high;
+        pinctrl-names = "default";
+        pinctrl-0 = <&pinctrl_wifi_regon>;
+    };
 };
 
 &gpio4 {
-	fec_rst {
-		gpio-hog;
-		gpios = <2 GPIO_ACTIVE_HIGH>;
-		line-name = "fec_rst";
-		output-high;
-		pinctrl-names = "default";
-		pinctrl-0 = <&pinctrl_fec_rst>;
+    fec_rst {
+        gpio-hog;
+        gpios = <2 GPIO_ACTIVE_HIGH>;
+        line-name = "fec_rst";
+        output-high;
+        pinctrl-names = "default";
+        pinctrl-0 = <&pinctrl_fec_rst>;
     };
 
-	eqos_rst {
-		gpio-hog;
-		gpios = <22 GPIO_ACTIVE_HIGH>;
-		line-name = "eqos_rst";
-		output-high;
-		pinctrl-names = "default";
-		pinctrl-0 = <&pinctrl_eqos_rst>;
-	};
+    eqos_rst {
+        gpio-hog;
+        gpios = <22 GPIO_ACTIVE_HIGH>;
+        line-name = "eqos_rst";
+        output-high;
+        pinctrl-names = "default";
+        pinctrl-0 = <&pinctrl_eqos_rst>;
+    };
 };
 
 &i2c1 {
@@ -676,11 +676,12 @@
 			MX8MP_IOMUXC_SPDIF_TX__I2C5_SCL         0x400001c2
 		>;
 	};
-	pinctrl_mipi_dsi_bl_en: mipi_dsi_bl_en {
-		fsl,pins = <
-			MX8MP_IOMUXC_GPIO1_IO07__GPIO1_IO07     0x16
-		>;
-	};
+
+    pinctrl_mipi_dsi_bl_en: mipi_dsi_bl_en {
+        fsl,pins = <
+            MX8MP_IOMUXC_GPIO1_IO07__GPIO1_IO07     0x16
+        >;
+    };
 
 	pinctrl_mipi_dsi_en: mipidsiengrp {
 		fsl,pins = <
@@ -702,11 +703,11 @@
 		>;
 	};
 
-	pinctrl_touch_rst: touch_rst {
-			fsl,pins = <
-			MX8MP_IOMUXC_GPIO1_IO10__GPIO1_IO10     0x16
-		>;
-	};
+    pinctrl_touch_rst: touch_rst {
+            fsl,pins = <
+            MX8MP_IOMUXC_GPIO1_IO10__GPIO1_IO10     0x16
+        >;
+    };
 
 	pinctrl_pmic: pmicirqgrp {
 		fsl,pins = <
@@ -868,17 +869,17 @@
 		>;
 	};
 
-	pinctrl_wifi_module_power: mipi_wifi_module_power {
-			fsl,pins = <
-			MX8MP_IOMUXC_GPIO1_IO11__GPIO1_IO11             0x41 // reset
-		>;
-	};
+    pinctrl_wifi_module_power: mipi_wifi_module_power {
+            fsl,pins = <
+            MX8MP_IOMUXC_GPIO1_IO11__GPIO1_IO11             0x41 // reset
+        >;
+    };
 
-	pinctrl_wifi_regon: mipi_wifi_regon {
-		fsl,pins = <
-			MX8MP_IOMUXC_SD1_RESET_B__GPIO2_IO10            0x41
-		>;
-	};
+    pinctrl_wifi_regon: mipi_wifi_regon {
+        fsl,pins = <
+            MX8MP_IOMUXC_SD1_RESET_B__GPIO2_IO10            0x41
+        >;
+    };
 
     pinctrl_eqos_rst: eqos_rst {
         fsl,pins = <
