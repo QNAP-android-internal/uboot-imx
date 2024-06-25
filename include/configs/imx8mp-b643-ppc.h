@@ -43,6 +43,14 @@
 			   "else run jh_netboot; fi; \0" \
 	"jh_netboot=setenv fdtfile ${jh_root_dtb}; setenv jh_clk clk_ignore_unused mem=1920MB; run netboot; \0 "
 
+#define SR_IR_V2_COMMAND \
+	"nodes=/busfreq /power-domains /soc@0/caam-sm@100000 /soc@0/bus@30000000/caam_secvio /soc@0/bus@30000000/caam-snvs@30370000 /soc@0/bus@30800000/flexspi_nand@30bb0000 /soc@0/bus@32c00000/mipi_dsi@32e60000 /soc@0/bus@32c00000/lcd-controller@32e80000 /soc@0/bus@32c00000/blk-ctl@32ec0000 /soc@0/bus@30800000/i2c@30a20000/pca9450@25 /soc@0/bus@30800000/i2c@30a30000/adv7535@3d /soc@0/bus@30800000/i2c@30a30000/tcpc@50 /wdt-reboot /mcu_rdc /soc@0/bus@30800000/ethernet@30bf0000 /dsi-host /rm67199_panel /cbtl04gp /binman /vpu_g1@38300000 /vpu_g2@38310000 /vpu_vc8000e@38320000 /vpu_v4l2 /gpu3d@38000000 /gpu2d@38008000 /vipsi@38500000 /mix_gpu_ml \0" \
+	"sr_ir_v2_cmd=cp.b ${fdtcontroladdr} ${fdt_addr_r} 0x10000;"\
+	"fdt addr ${fdt_addr_r};"\
+	"fdt set /soc@0/usb@32f10100/usb@38100000 compatible snps,dwc3;" \
+	"fdt set /soc@0/usb@32f10108/usb@38200000 compatible snps,dwc3;" \
+	"for i in ${nodes}; do fdt rm ${i}; done \0"
+
 #define CFG_MFG_ENV_SETTINGS \
 	CFG_MFG_ENV_SETTINGS_DEFAULT \
 	"initrd_addr=0x43800000\0" \
@@ -52,7 +60,7 @@
 
 
 #ifdef CONFIG_NAND_BOOT
-#define MFG_NAND_PARTITION "mtdparts=gpmi-nand:64m(nandboot),16m(nandfit),32m(nandkernel),16m(nanddtb),8m(nandtee),-(nandrootfs)"
+#define MFG_NAND_PARTITION "mtdparts=gpmi-nand:64m(nandboot),16m(nandfit),64m(nandkernel),16m(nanddtb),8m(nandtee),-(nandrootfs)"
 #endif
 
 /* Initial environment variables */
@@ -69,14 +77,15 @@
 		"root=ubi0:nandrootfs rootfstype=ubifs "		     \
 		MFG_NAND_PARTITION \
 		"\0" \
-	"bootcmd=nand read ${loadaddr} 0x5000000 0x2000000;"\
-		"nand read ${fdt_addr_r} 0x7000000 0x100000;"\
+	"bootcmd=nand read ${loadaddr} 0x5000000 0x4000000;"\
+		"nand read ${fdt_addr_r} 0x9000000 0x100000;"\
 		"booti ${loadaddr} - ${fdt_addr_r}"
 
 #else
 #define CFG_EXTRA_ENV_SETTINGS		\
 	CFG_MFG_ENV_SETTINGS \
 	JAILHOUSE_ENV \
+	SR_IR_V2_COMMAND \
 	BOOTENV \
 	"codec_quirk=snd-soc-rt5670.quirk=0x20d\0" \
 	"prepare_mcore=setenv mcore_clk clk-imx8mp.mcore_booted;\0" \
