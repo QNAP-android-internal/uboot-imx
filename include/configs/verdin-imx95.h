@@ -51,11 +51,11 @@
 
 #define XEN_BOOT_ENV \
 	    "domu-android-auto=no\0" \
-            "xenhyper_bootargs=console=dtuart dom0_mem=4096M dom0_max_vcpus=2 \0" \
+            "xenhyper_bootargs=console=dtuart dom0_mem=4096M dom0_max_vcpus=2 pci-passthrough=on\0" \
             "xenlinux_bootargs= \0" \
             "xenlinux_console=hvc0 earlycon=xen\0" \
-            "xenlinux_addr=0x9e000000\0" \
-            "dom0fdt_file=imx95-19x19-verdin.dtb\0" \
+            "xenlinux_addr=0x9c000000\0" \
+            "dom0fdt_file=" CONFIG_DEFAULT_FDT_FILE "\0" \
             "xenboot_common=" \
                 "${get_cmd} ${loadaddr} xen;" \
                 "${get_cmd} ${fdt_addr} ${dom0fdt_file};" \
@@ -64,6 +64,7 @@
                 "fdt resize 256;" \
                 "fdt set /chosen/module@0 reg <0x00000000 ${xenlinux_addr} 0x00000000 0x${filesize}>;" \
                 "fdt set /chosen/module@0 bootargs \"${bootargs} ${xenlinux_bootargs}\"; " \
+                "fdt set /soc/bus@49000000/iommu@490d0000 status disabled;" \
                 "setenv bootargs ${xenhyper_bootargs};" \
                 "booti ${loadaddr} - ${fdt_addr};" \
             "\0" \
