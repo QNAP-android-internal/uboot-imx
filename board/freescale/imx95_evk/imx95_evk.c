@@ -24,6 +24,7 @@
 #include <i2c.h>
 #include <dm/uclass.h>
 #include <dm/uclass-internal.h>
+#include <power/regulator.h>
 
 #ifdef CONFIG_SCMI_FIRMWARE
 #include <scmi_agent.h>
@@ -311,6 +312,24 @@ static void netc_phy_rst(const char *gpio_name, const char *label)
 
 }
 
+static void netc_regulator_enable(const char *devname)
+{
+	int ret;
+	struct udevice *dev;
+
+	ret = regulator_get_by_devname(devname, &dev);
+	if (ret) {
+		printf("Get %s regulator failed %d\n", devname, ret);
+		return;
+	}
+
+	ret = regulator_set_enable_if_allowed(dev, true);
+	if (ret) {
+		printf("Enable %s regulator %d\n", devname, ret);
+		return;
+	}
+}
+
 void netc_init(void)
 {
 	int ret;
@@ -329,6 +348,8 @@ void netc_init(void)
 	netc_phy_rst("gpio@22_5", "ENET2_RST_B");
 #else
 	netc_phy_rst("i2c5_io@21_2", "ENET1_RST_B");
+	netc_regulator_enable("regulator-aqr-stby");
+	netc_regulator_enable("regulator-mac-stby");
 #endif
 	pci_init();
 }
