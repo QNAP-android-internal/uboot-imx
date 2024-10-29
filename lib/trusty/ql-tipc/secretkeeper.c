@@ -17,6 +17,8 @@
 #include <trusty/secretkeeper.h>
 #include <trusty/trusty_ipc.h>
 #include <trusty/util.h>
+#include <linux/libfdt.h>
+#include <fdt_support.h>
 
 static struct trusty_ipc_chan secretkeeper_chan;
 static bool initialized;
@@ -127,4 +129,39 @@ int secretkeeper_get_identity(size_t identity_buf_size,
     }
 
     return TRUSTY_ERR_NONE;
+}
+
+#define SK_KEY_SIZE (128)
+int trusty_populate_sk_key(void *fdt_addr) {
+    uint8_t sk_key[SK_KEY_SIZE] = {0};
+    size_t out_key_size = 0;
+    int node_offset = 0;
+    int ret = 0;
+
+    /* Retrive the key from secure os */
+    ret = secretkeeper_get_identity(sizeof(sk_key), sk_key, &out_key_size);
+    if (ret != TRUSTY_ERR_NONE || out_key_size > sizeof(sk_key)) {
+        trusty_error("Failed to get secretkeeper key (err = %d)!", ret);
+        return ret;
+    }
+
+    /* Now populate the key to device-tree */
+    ret = fdt_increase_size(fdt_addr, SK_KEY_SIZE);
+    if (ret != 0) {
+        trusty_error("Failed to increase the fdt size! ret: %d", ret);
+        return ret;
+    }
+
+    node_offset = fdt_path_offset(fdt_addr, "/avf/reference/avf");
+    if (node_offset < 0) {
+        trusty_error("Failed to find avf fdt path!");
+        return node_offset;
+    }
+
+    ret = fdt_setprop(fdt_addr, node_offset, "secretkeeper_public_key", sk_key, out_key_size);
+    if (ret != 0) {
+        trusty_error("Failed to set avf property!, err: %d", ret);
+    }
+
+    return ret;
 }
