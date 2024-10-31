@@ -9,6 +9,7 @@
 / {
 	lvds0_panel {
 		compatible = "jdi,tx26d202vm0bwa";
+		backlight = <&lvds_backlight>;
 
 		display-timings {
 			native-mode = <&timing0>;
@@ -47,6 +48,11 @@
 				};
 			};
 		};
+	};
+
+	lvds_backlight: backlight {
+		compatible = "gpio-backlight";
+		gpios = <&adp5585gpio 3 GPIO_ACTIVE_HIGH>;
 	};
 };
 
