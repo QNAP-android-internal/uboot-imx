@@ -1,7 +1,7 @@
 #
 # Copyright 2021 IEI
 # 
-# Author: Wig Cheng <wigcheng@ieiworld.com>
+# Author: IEI development team <dev@ieiworld.com>
 #
 # SPDX-License-Identifier:      GPL-2.0+
 #
