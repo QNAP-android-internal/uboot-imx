@@ -346,45 +346,9 @@ usage() {
 
 	For example:
 
-	i.mx8MP:
-	* AXON-IMX8MP:
-	./install_uboot_imx8.sh -b imx8mp-axon.dtb -d /dev/sdX
-
-	* EDM-G-IMX8MP with WB/WIZARD:
-	./install_uboot_imx8.sh -b imx8mp-edm-g.dtb -d /dev/sdX
-
-	* SC-IMX8MP:
-	./install_uboot_imx8.sh -b imx8mp-sc.dtb -d /dev/sdX
-
-	* TEK-IMX8MP:
-	./install_uboot_imx8.sh -b imx8mp-tek.dtb -d /dev/sdX
-
-	* TEK-IMX8MP with flexspi boot (only generate flash.bin):
-	./install_uboot_imx8.sh -b imx8mp-tek.dtb -f -d /dev/null
-
-	* TEP-IMX8MP:
-	./install_uboot_imx8.sh -b imx8mp-tep.dtb -d /dev/sdX
-
-	* TEP-IMX8MP with flexspi boot (only generate flash.bin):
-	./install_uboot_imx8.sh -b imx8mp-tep.dtb -f -d /dev/null
-
-	i.MX93:
-	* AXON-IMX93:
-	./install_uboot_imx8.sh -b imx93-axon.dtb -d /dev/sdX
-
-	* IMX93_EVK with silicon revision $(beta):
-	./install_uboot_imx8.sh -b imx93-11x11-evk.dtb -s A0 -d /dev/sdX
-
-	* EDM-IMX93:
-	./install_uboot_imx8.sh -b imx93-edm.dtb -d /dev/sdX
-
-	* PICO-IMX93:
-	./install_uboot_imx8.sh -b imx93-pico.dtb -d /dev/sdX
-
 	i.MX95:
-	* EDM-IMX95:
-	./install_uboot_imx8.sh -b imx95-edm-evm.dtb -d /dev/sdX
-	./install_uboot_imx8.sh -b imx95-edm-evm.dtb -r 16gb -d /dev/sdX
+	* SMARC-IMX95:
+	./install_uboot_imx8.sh -b imx95-smarc-ismc-cb.dtb -r 16gb -d /dev/sdX
 "
 }
 
