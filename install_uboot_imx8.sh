@@ -62,7 +62,7 @@ setup_platform() {
 		SILICON_REV=${SILICON_REV:-B0}
 		IMX_BOOT_SEEK="32"
 		MKIMAGE_TARGET="flash_a55"
-		RAM_SIZE=${RAM_SIZE:-8gb}
+		RAM_SIZE=${RAM_SIZE:-16gb}
 		;;
 	*)
 		printf "Target SOC isn't supported by this script\n"
@@ -282,14 +282,8 @@ generate_oei_image() {
 	export TOOLS=${FWD}
 
 	cd imx-oei
-	if [ "${SILICON_REV}" = "A0" ]; then
-		make board=${IMX_OEI_CONFIG} oei=ddr r=A0 DEBUG=1 DDR_CONFIG=XIMX95LPD5EVK19_6400mbps_train_timing_a1
-	elif [ "${RAM_SIZE}" = "4gb" ]; then
-		make board=${IMX_OEI_CONFIG} oei=ddr r=B0 DEBUG=1 DDR_CONFIG=lpddr5_6400mbps_train_timing_4gb
-	elif [ "${RAM_SIZE}" = "8gb" ]; then
-		make board=${IMX_OEI_CONFIG} oei=ddr r=B0 DEBUG=1 DDR_CONFIG=lpddr5_6400mbps_train_timing_8gb
-	elif [ "${RAM_SIZE}" = "16gb" ]; then
-		make board=${IMX_OEI_CONFIG} oei=ddr r=B0 DEBUG=1 DDR_CONFIG=lpddr5_6400mbps_train_timing_16gb
+	if [ "${RAM_SIZE}" = "16gb" ]; then
+		make board=${IMX_OEI_CONFIG} oei=ddr r=B0 DEBUG=1
 	fi
 
 	cp build/${IMX_OEI_CONFIG}/ddr/oei-m33-ddr.bin ${TWD}/${MKIMAGE_DIR}/${SOC_DIR} ||
@@ -311,10 +305,8 @@ generate_imx_boot() {
 		make SOC=${SOC_TARGET} REV=${SILICON_REV} dtbs="${DTBS}" ${MKIMAGE_TARGET} &&
 			printf "Make target: ${MKIMAGE_TARGET} and generate flash.bin... \n" || printf "Fails to generate flash.bin... \n"
 	elif [ "${SOC_DIR}" = "iMX95" ]; then
-		if [ "${SILICON_REV}" = "A0" ] || [ "${SILICON_REV}" = "B0" ]; then
-			make SOC=${SOC_TARGET} REV=${SILICON_REV} OEI=YES LPDDR_TYPE=lpddr5 dtbs="${DTBS}" ${MKIMAGE_TARGET} &&
-				printf "Make target: ${MKIMAGE_TARGET} and generate flash.bin... \n" || printf "Fails to generate flash.bin... \n"
-		fi
+		make SOC=${SOC_TARGET} REV=${SILICON_REV} OEI=YES LPDDR_TYPE=lpddr5 dtbs="${DTBS}" ${MKIMAGE_TARGET} &&
+			printf "Make target: ${MKIMAGE_TARGET} and generate flash.bin... \n" || printf "Fails to generate flash.bin... \n"
 	else
 		make SOC=${SOC_TARGET} dtbs="${DTBS}" ${MKIMAGE_TARGET} &&
 			printf "Make target: ${MKIMAGE_TARGET} and generate flash.bin... \n" || printf "Fails to generate flash.bin... \n"
