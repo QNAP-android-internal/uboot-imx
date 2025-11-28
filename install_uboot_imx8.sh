@@ -30,12 +30,12 @@ TWD=$(pwd)
 ATF_BOOT_UART_BASE="0x30890000"
 
 # Config for i.mx95
-IMX_SM_GIT_REPO="https://github.com/TechNexion/imx-sm.git"
-IMX_SM_BRANCH_VER="tn-imx_6.12.34_2.1.0"
+IMX_SM_GIT_REPO="https://github.com/QNAP-android-internal/imx-sm.git"
+IMX_SM_BRANCH_VER="iei-imx_6.12.34_2.1.0"
 IMX_SM_CONFIG="mx95evk"
-IMX_OEI_GIT_REPO="https://github.com/TechNexion/imx-oei.git"
-IMX_OEI_BRANCH_VER="tn-imx_6.12.34_2.1.0"
-IMX_OEI_CONFIG="edm-imx95"
+IMX_OEI_GIT_REPO="https://github.com/QNAP-android-internal/imx-oei.git"
+IMX_OEI_BRANCH_VER="iei-imx_6.12.34_2.1.0"
+IMX_OEI_CONFIG="smarc-imx95"
 ARM_TOOLCHAIN_VER_DEFAULT="14.2.rel1"
 
 setup_platform() {
