@@ -41,37 +41,11 @@ ARM_TOOLCHAIN_VER_DEFAULT="14.2.rel1"
 setup_platform() {
 	SOC=$(echo "${DTBS}" | cut -d'-' -f1)
 	case "${SOC}" in
-	imx8m | imx8mq)
-		PLATFORM="imx8mq"
-		SOC_TARGET="iMX8M"
-		SOC_DIR="iMX8M"
-		IMX_BOOT_SEEK="33"
-		;;
-	imx8mm)
-		PLATFORM="imx8mm"
-		SOC_TARGET="iMX8MM"
-		SOC_DIR="iMX8M"
-		IMX_BOOT_SEEK="33"
-		;;
 	imx8mp)
 		PLATFORM="imx8mp"
 		SOC_TARGET="iMX8MP"
 		SOC_DIR="iMX8M"
 		IMX_BOOT_SEEK="32"
-		;;
-	imx8mn)
-		PLATFORM="imx8mn"
-		SOC_TARGET="iMX8MN"
-		SOC_DIR="iMX8M"
-		IMX_BOOT_SEEK="32"
-		;;
-	imx91)
-		PLATFORM="imx91"
-		SOC_TARGET="iMX91"
-		SOC_DIR="iMX91"
-		SILICON_REV=${SILICON_REV:-A0}
-		IMX_BOOT_SEEK="32"
-		MKIMAGE_TARGET="flash_singleboot"
 		;;
 	imx93)
 		PLATFORM="imx93"
@@ -133,19 +107,6 @@ install_firmware() {
 			' plat/imx/imx9/imx95/imx95_m7.c
 		fi
 	fi
-	if (git diff-index --quiet HEAD -- plat/imx/imx8mm/imx8mm_bl31_setup.c); then
-		if [ -z "${DTBS##*imx8mm-axon*}" ]; then
-			# AXON: Change UART2 base address to UART1 and released UART4 from M4
-			sed -i 's/(RDC_PDAP_UART4, D1R | D1W),/(RDC_PDAP_UART4, D0R | D0W),/g' plat/imx/imx8m/imx8mm/imx8mm_bl31_setup.c
-			rm build/${PLATFORM}/release/bl31.bin
-			ATF_BOOT_UART_BASE="0x30860000"
-		fi
-	else
-		if [ -n "${DTBS##*imx8mm-axon*}" ]; then
-			git checkout plat/imx/imx8mm/imx8mm_bl31_setup.c
-			rm build/${PLATFORM}/release/bl31.bin
-		fi
-	fi
 
 	if [ ! -f build/${PLATFORM}/release/bl31.bin ]; then
 		rm -rf build
@@ -176,7 +137,7 @@ install_firmware() {
 			cp firmware-imx-${DDR_FW_VER}/firmware/ddr/synopsys/lpddr4_pmu_train_2d_imem_202006.bin ${TWD}/${MKIMAGE_DIR}/${SOC_DIR}
 			cp firmware-imx-${DDR_FW_VER}/firmware/hdmi/cadence/signed_hdmi_imx8m.bin ${TWD}/${MKIMAGE_DIR}/${SOC_DIR}
 			;;
-		imx93 | imx91)
+		imx93)
 			cp firmware-imx-${DDR_FW_VER}/firmware/ddr/synopsys/lpddr4_imem_1d_v202201.bin ${TWD}/${MKIMAGE_DIR}/${SOC_DIR}
 			cp firmware-imx-${DDR_FW_VER}/firmware/ddr/synopsys/lpddr4_dmem_1d_v202201.bin ${TWD}/${MKIMAGE_DIR}/${SOC_DIR}
 			cp firmware-imx-${DDR_FW_VER}/firmware/ddr/synopsys/lpddr4_imem_2d_v202201.bin ${TWD}/${MKIMAGE_DIR}/${SOC_DIR}
@@ -188,19 +149,13 @@ install_firmware() {
 			cp firmware-imx-${DDR_FW_VER}/firmware/ddr/synopsys/lpddr5_imem_qb_v202409.bin ${TWD}/${MKIMAGE_DIR}/${SOC_DIR}
 			cp firmware-imx-${DDR_FW_VER}/firmware/ddr/synopsys/lpddr5_imem_v202409.bin ${TWD}/${MKIMAGE_DIR}/${SOC_DIR}
 			;;
-		*)
-			cp firmware-imx-${DDR_FW_VER}/firmware/ddr/synopsys/lpddr4_pmu_train_1d_dmem.bin ${TWD}/${MKIMAGE_DIR}/${SOC_DIR}
-			cp firmware-imx-${DDR_FW_VER}/firmware/ddr/synopsys/lpddr4_pmu_train_1d_imem.bin ${TWD}/${MKIMAGE_DIR}/${SOC_DIR}
-			cp firmware-imx-${DDR_FW_VER}/firmware/ddr/synopsys/lpddr4_pmu_train_2d_dmem.bin ${TWD}/${MKIMAGE_DIR}/${SOC_DIR}
-			cp firmware-imx-${DDR_FW_VER}/firmware/ddr/synopsys/lpddr4_pmu_train_2d_imem.bin ${TWD}/${MKIMAGE_DIR}/${SOC_DIR}
-			;;
 		esac
 	else
 		printf "Cannot find firmware \n"
 	fi
 
 	#Fetch and copy EdgeLock Secure Enclave firmware
-	if [ "${SOC_DIR}" = "iMX93" ] || [ "${SOC_DIR}" = "iMX91" ] || [ "${SOC_DIR}" = "iMX95" ]; then
+	if [ "${SOC_DIR}" = "iMX93" ] || [ "${SOC_DIR}" = "iMX95" ]; then
 		SOC_LOWER=$(echo $SOC_DIR | sed 's/^i//' | tr '[:upper:]' '[:lower:]')
 		REV_LOWER=$(echo "${SILICON_REV}" | tr '[:upper:]' '[:lower:]')
 		AHAB_IMG="${SOC_LOWER}${REV_LOWER}-ahab-container.img"
@@ -229,7 +184,7 @@ install_firmware() {
 install_uboot_dtb() {
 	#Copy uboot binary
 	cd ${TWD}
-	if [ "${SOC_DIR}" = "iMX93" ] || [ "${SOC_DIR}" = "iMX91" ] || [ "${SOC_DIR}" = "iMX95" ]; then
+	if [ "${SOC_DIR}" = "iMX93" ] || [ "${SOC_DIR}" = "iMX95" ]; then
 		cp u-boot.bin ${TWD}/${MKIMAGE_DIR}/${SOC_DIR}
 	elif [ -f u-boot-nodtb.bin ]; then
 		cp u-boot-nodtb.bin ${TWD}/${MKIMAGE_DIR}/${SOC_DIR}
@@ -397,20 +352,6 @@ usage() {
 
 	For example:
 
-	i.mx8MM:
-	* PICO-IMX8MM with PICO-PI-IMX8 baseDTBS:
-	./install_uboot_imx8.sh -b imx8mm-pico-pi.dtb -b imx8mm-pico-wizard.dtb -d /dev/sdX
-
-	* EDM-G-IMX8MM with WB:
-	./install_uboot_imx8.sh -b imx8mm-edm-g-wb.dtb -d /dev/sdX
-
-	i.mx8MQ:
-	* EDM-IMX8MQ with EDM-WIZARD baseDTBS:
-	./install_uboot_imx8.sh -b imx8mq-edm-wizard.dtb -d /dev/sdX
-
-	* PICO-IMX8MQ with PICO-PI-IMX8 baseDTBS:
-	./install_uboot_imx8.sh -b imx8mq-pico-pi.dtb -b imx8mq-pico-wizard.dtb -d /dev/sdX
-
 	i.mx8MP:
 	* AXON-IMX8MP:
 	./install_uboot_imx8.sh -b imx8mp-axon.dtb -d /dev/sdX
@@ -433,11 +374,7 @@ usage() {
 	* TEP-IMX8MP with flexspi boot (only generate flash.bin):
 	./install_uboot_imx8.sh -b imx8mp-tep.dtb -f -d /dev/null
 
-	i.MX8MN:
-	* EDM-G-IMX8MN with WB:
-	./install_uboot_imx8.sh -b imx8mn-edm-g.dtb -d /dev/sdX
-
-	i.MX93/i.MX91:
+	i.MX93:
 	* AXON-IMX93:
 	./install_uboot_imx8.sh -b imx93-axon.dtb -d /dev/sdX
 
@@ -450,12 +387,7 @@ usage() {
 	* PICO-IMX93:
 	./install_uboot_imx8.sh -b imx93-pico.dtb -d /dev/sdX
 
-	* AXON-IMX91:
-	./install_uboot_imx8.sh -b imx91-axon.dtb -d /dev/sdX
-
-	* EDM-IMX91:
-	./install_uboot_imx8.sh -b imx91-edm.dtb -d /dev/sdX
-
+	i.MX95:
 	* EDM-IMX95:
 	./install_uboot_imx8.sh -b imx95-edm-evm.dtb -d /dev/sdX
 	./install_uboot_imx8.sh -b imx95-edm-evm.dtb -r 16gb -d /dev/sdX
