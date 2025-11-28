@@ -110,6 +110,8 @@ install_firmware() {
 
 	if [ ! -f build/${PLATFORM}/release/bl31.bin ]; then
 		rm -rf build
+		unset AS
+		unset LD
 		make PLAT=${PLATFORM} IMX_BOOT_UART_BASE=${ATF_BOOT_UART_BASE} bl31 || printf "Fails to build ATF firmware \n"
 	fi
 	if [ -f build/${PLATFORM}/release/bl31.bin ]; then
