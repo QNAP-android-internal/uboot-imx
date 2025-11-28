@@ -126,7 +126,7 @@ install_firmware() {
 	if [ ! -d firmware-imx-${DDR_FW_VER} ]; then
 		wget ${FSL_MIRROR}/firmware-imx-${DDR_FW_VER}.bin &&
 			chmod +x firmware-imx-${DDR_FW_VER}.bin &&
-			./firmware-imx-${DDR_FW_VER}.bin ||
+			./firmware-imx-${DDR_FW_VER}.bin --auto-accept --force ||
 			printf "Fails to fetch DDR firmware \n"
 	fi
 
@@ -166,7 +166,7 @@ install_firmware() {
 			if [ ! -d firmware-sentinel-0.11 ]; then
 				wget ${FSL_MIRROR}/firmware-sentinel-0.11.bin
 				chmod +x firmware-sentinel-0.11.bin
-				./firmware-sentinel-0.11.bin
+				./firmware-sentinel-0.11.bin --auto-accept --force
 			fi
 
 			cp firmware-sentinel-0.11/mx93a0-ahab-container.img ${TWD}/${MKIMAGE_DIR}/${SOC_DIR}
@@ -175,7 +175,7 @@ install_firmware() {
 			if [ ! -d firmware-ele-imx-${ELE_FW_VER} ]; then
 				wget ${FSL_MIRROR}/firmware-ele-imx-${ELE_FW_VER}.bin
 				chmod +x firmware-ele-imx-${ELE_FW_VER}.bin
-				./firmware-ele-imx-${ELE_FW_VER}.bin
+				./firmware-ele-imx-${ELE_FW_VER}.bin --auto-accept --force
 			fi
 			cp firmware-ele-imx-${ELE_FW_VER}/${AHAB_IMG} ${TWD}/${MKIMAGE_DIR}/${SOC_DIR}
 			printf "Copy firmware-ele-imx-${ELE_FW_VER}/${AHAB_IMG} to $MKIMAGE_DIR \n"
