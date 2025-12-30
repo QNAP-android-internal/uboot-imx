@@ -9,7 +9,7 @@
 #include <linux/sizes.h>
 #include <linux/stringify.h>
 #include <asm/arch/imx-regs.h>
-#include "imx_env.h"
+#include <env/nxp/imx_env.h>
 
 #define CFG_SYS_UBOOT_BASE	(QSPI0_AMBA_BASE + CONFIG_SYS_MMCSD_RAW_MODE_U_BOOT_SECTOR * 512)
 
@@ -177,10 +177,8 @@
 
 #define CFG_SYS_NAND_BASE           0x20000000
 
-#ifdef CONFIG_TARGET_IMX8MP_DDR4_EVK
-#define CFG_SYS_FSL_USDHC_NUM	1
-#else
-#define CFG_SYS_FSL_USDHC_NUM	2
+#ifdef CONFIG_IMX_MATTER_TRUSTY
+#define NS_ARCH_ARM64 1
 #endif
 
 
