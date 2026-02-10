@@ -1,0 +1,5 @@
+i.MX95 B0787 BOARD
+M:	CM Wang <dev@ieiworld.com>
+S:	Maintained
+F:	board/ieiworld/imx95-b0787-smarc/
+F:	configs/imx95_smarc_ismc_cb_defconfig
