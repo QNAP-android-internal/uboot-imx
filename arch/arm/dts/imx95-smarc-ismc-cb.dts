@@ -4,7 +4,7 @@
  */
 
 #include "../dts/upstream/src/arm64/freescale/imx95-19x19-evk.dts"
-#include "imx95-19x19-evk-u-boot.dtsi"
+#include "imx95-smarc-u-boot.dtsi"
 
 / {
 	model = "iEi i.MX95 SMARC board";
