@@ -53,7 +53,6 @@ int board_early_init_f(void)
 	return 0;
 }
 
-#ifdef CONFIG_USB_TCPC
 struct tcpc_port port;
 #ifdef CONFIG_TARGET_IMX95_15X15_EVK
 struct tcpc_port portpd;
@@ -159,7 +158,6 @@ static void setup_typec(void)
 		return;
 	}
 }
-#endif
 
 #ifdef CONFIG_USB_DWC3
 
@@ -268,6 +266,7 @@ int board_usb_init(int index, enum usb_init_type init)
 		if (ret)
 			return ret;
 #endif
+		tca_mux_select(0); //force calling this function and set to 0 sequence
 #ifdef CONFIG_USB_DWC3
 		return dwc3_uboot_init(&dwc3_device_data);
 #endif
@@ -467,6 +466,9 @@ int board_init(void)
 
 #if defined(CONFIG_USB_TCPC)
 	setup_typec();
+#else
+	printf("No calling setup_typec()\n");
+	tca_base = USB1_BASE_ADDR + 0xfc000; //set tca base register here
 #endif
 
 	netc_init();
