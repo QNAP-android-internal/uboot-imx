@@ -22,7 +22,6 @@
 		regulator-name = "USB_VBUS";
 		regulator-min-microvolt = <5000000>;
 		regulator-max-microvolt = <5000000>;
-		gpio = <&i2c7_pcal6524 3 GPIO_ACTIVE_HIGH>;
 		enable-active-high;
 		regulator-always-on;
 	};
@@ -32,7 +31,6 @@
 		regulator-name = "aqr-stby";
 		regulator-min-microvolt = <3300000>;
 		regulator-max-microvolt = <3300000>;
-		gpio = <&i2c5_pcal6408 1 GPIO_ACTIVE_HIGH>;
 		enable-active-high;
 	};
 
@@ -42,7 +40,6 @@
 		regulator-min-microvolt = <3300000>;
 		regulator-max-microvolt = <3300000>;
 		vin-supply = <&reg_aqr_stby>;
-		gpio = <&i2c5_pcal6408 0 GPIO_ACTIVE_HIGH>;
 		enable-active-high;
 	};
 
@@ -51,7 +48,6 @@
 		regulator-name = "mac-stby";
 		regulator-min-microvolt = <3300000>;
 		regulator-max-microvolt = <3300000>;
-		gpio = <&i2c7_pcal6524 13 GPIO_ACTIVE_LOW>;
 	};
 
 	reg_serdes_en: regulator-mac-en {
@@ -60,7 +56,6 @@
 		regulator-min-microvolt = <3300000>;
 		regulator-max-microvolt = <3300000>;
 		vin-supply = <&reg_serdes_stby>;
-		gpio = <&i2c5_pcal6408 3 GPIO_ACTIVE_LOW>;
 	};
 };
 
