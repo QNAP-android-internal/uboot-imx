@@ -266,6 +266,7 @@ generate_sm_image() {
 	export TOOLS=${FWD}
 
 	cd imx-sm &&
+		make cfg config=${IMX_SM_CONFIG} &&
 		make config=${IMX_SM_CONFIG} all &&
 		cp build/${IMX_SM_CONFIG}/m33_image.bin ${TWD}/${MKIMAGE_DIR}/${SOC_DIR} ||
 		printf "Fails to generate SM firmware \n"
