@@ -42,6 +42,13 @@
 		gpio-controller;
 		#gpio-cells = <2>;
 	};
+
+	i2c2_gpio_expander_20: i2c2-gpio-expander@20 {
+		compatible = "nxp,pcal6408";
+		reg = <0x20>;
+		gpio-controller;
+		#gpio-cells = <2>;
+	};
 };
 
 &lpi2c3 {
