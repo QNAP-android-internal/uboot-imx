@@ -296,7 +296,7 @@ int board_usb_cleanup(int index, enum usb_init_type init)
 	return ret;
 }
 
-static void netc_phy_rst(const char *gpio_name, const char *label)
+static void __maybe_unused netc_phy_rst(const char *gpio_name, const char *label)
 {
 	int ret;
 	struct gpio_desc desc;
@@ -355,13 +355,6 @@ void netc_init(void)
 		return;
 	}
 
-#ifdef CONFIG_TARGET_IMX95_15X15_EVK
-	netc_phy_rst("gpio@22_4", "ENET1_RST_B");
-	netc_phy_rst("gpio@22_5", "ENET2_RST_B");
-#else
-	netc_phy_rst("i2c5_io@21_2", "ENET1_RST_B");
-
-#endif
 	pci_init();
 }
 
