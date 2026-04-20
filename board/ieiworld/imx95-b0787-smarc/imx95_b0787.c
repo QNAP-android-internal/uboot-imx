@@ -361,23 +361,6 @@ void netc_init(void)
 #else
 	netc_phy_rst("i2c5_io@21_2", "ENET1_RST_B");
 
-	/* Enable in SW count */
-	netc_regulator_enable("regulator-aqr-stby", true);
-	netc_regulator_enable("regulator-mac-stby", true);
-	netc_regulator_enable("regulator-aqr-en", true);
-	netc_regulator_enable("regulator-mac-en", true);
-
-	/* Disable regulator to have explicit reset to AQR PHY and clock generator */
-	udelay(10000);
-	netc_regulator_enable("regulator-aqr-stby", false);
-	netc_regulator_enable("regulator-mac-stby", false);
-	netc_regulator_enable("regulator-aqr-en", false);
-	netc_regulator_enable("regulator-mac-en", false);
-
-	udelay(10000);
-	netc_regulator_enable("regulator-aqr-stby", true);
-	netc_regulator_enable("regulator-mac-stby", true);
-
 #endif
 	pci_init();
 }
