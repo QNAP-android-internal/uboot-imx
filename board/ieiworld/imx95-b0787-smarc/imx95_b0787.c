@@ -22,6 +22,10 @@
 #include <i2c.h>
 #include <dm/uclass.h>
 #include <dm/uclass-internal.h>
+#ifdef CONFIG_SWUPDATE
+#include <version.h>
+#include <timestamp.h>
+#endif
 
 extern int board_fix_fdt_fuse(void *fdt);
 
@@ -466,6 +470,9 @@ int board_late_init(void)
 	env_set("sec_boot", "no");
 #ifdef CONFIG_AHAB_BOOT
 	env_set("sec_boot", "yes");
+#endif
+#ifdef CONFIG_SWUPDATE
+	env_set("u-boot_version", PLAIN_VERSION"("U_BOOT_DATE"-"U_BOOT_TIME")");
 #endif
 
 	return 0;
