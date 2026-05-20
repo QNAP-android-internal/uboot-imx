@@ -9,4 +9,10 @@ config SYS_VENDOR
 config SYS_CONFIG_NAME
 	default "imx95_b0787"
 
+config SWUPDATE
+	bool "Enable SWUpdate dual-copy A/B boot support"
+	help
+	  Enable SWUpdate dual-copy (A/B) OTA boot environment variables
+	  including bootslot selection, rollback, and bootcount support.
+
 endif
