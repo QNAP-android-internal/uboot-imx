@@ -963,6 +963,7 @@ dtb-$(CONFIG_ARCH_IMX9) += \
 	imx93w-evk.dtb \
 	imx93w-frdm.dtb \
 	imx93-var-som-symphony.dtb \
+	imx937-evk.dtb \
 	imx95-smarc-ismc-cb.dtb
 
 dtb-$(CONFIG_ARCH_IMXRT) += imxrt1020-evk.dtb \
