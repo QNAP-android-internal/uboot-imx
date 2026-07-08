@@ -10,7 +10,7 @@ config SYS_CONFIG_NAME
 	default "imx8mp-b643-ppc"
 
 config IMX_CONFIG
-	default "board/freescale/imx8mp_evk/imximage-8mp-lpddr4.cfg"
+	default "board/nxp/imx8mp_evk/imximage-8mp-lpddr4.cfg"
 
 config IMX8MP_GP5_LOCK_UPDATE
 	bool "Enable burn GP5_LOCK fuse at boot"
