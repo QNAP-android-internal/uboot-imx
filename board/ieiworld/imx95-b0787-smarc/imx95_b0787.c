@@ -13,6 +13,7 @@
 #include <dwc3-uboot.h>
 #include <linux/bitfield.h>
 #include <linux/bitops.h>
+#include <linux/bug.h>
 #include <linux/delay.h>
 #include <asm/gpio.h>
 #include <power/regulator.h>
