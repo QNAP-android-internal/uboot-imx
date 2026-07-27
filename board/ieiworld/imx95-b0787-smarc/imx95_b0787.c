@@ -22,6 +22,8 @@
 #include <i2c.h>
 #include <dm/uclass.h>
 #include <dm/uclass-internal.h>
+#include <dm/device.h>
+#include <dm/device-internal.h>
 #ifdef CONFIG_SWUPDATE
 #include <version.h>
 #include <timestamp.h>
@@ -348,6 +350,8 @@ static void __maybe_unused netc_regulator_enable(const char *devname, bool enabl
 void netc_init(void)
 {
 	int ret;
+	struct uclass *uc;
+	struct udevice *dev;
 
 	ret = imx9_scmi_power_domain_enable(IMX95_PD_NETC, false);
 	udelay(10000);
@@ -357,6 +361,14 @@ void netc_init(void)
 	if (ret) {
 		printf("SCMI_POWWER_STATE_SET Failed for NETC MIX\n");
 		return;
+	}
+
+	if (!uclass_get(UCLASS_GPIO, &uc)) {
+		uclass_foreach_dev(dev, uc) {
+			if (device_is_compatible(dev, "nxp,pcal6408"))
+				continue;
+			device_probe(dev);
+		}
 	}
 
 	pci_init();
