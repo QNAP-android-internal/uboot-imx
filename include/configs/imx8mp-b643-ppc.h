@@ -50,7 +50,7 @@
 
 
 #ifdef CONFIG_ANDROID_SUPPORT
-#include "imx8mp_evk_android.h"
+#include "imx8mp-b643-ppc_android.h"
 #endif
 
 #endif
