@@ -58,6 +58,7 @@
 	"androidboot.primary_display=imx-drm "	\
 	"androidboot.displaymode=1080p "	\
 	"androidboot.wificountrycode=CN "	\
+	"androidboot.camera.layout=only-ov5640 "	\
 	"buildvariant=userdebug "		\
 	"fbcon=logo-pos:center "		\
 	"fbcon=logo-count:1 "			\
