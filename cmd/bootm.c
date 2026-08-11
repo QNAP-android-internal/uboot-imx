@@ -12,6 +12,7 @@
 #include <env.h>
 #include <errno.h>
 #include <image.h>
+#include <linux/libfdt.h>
 #include <malloc.h>
 #include <nand.h>
 #include <asm/byteorder.h>
@@ -193,11 +194,22 @@ int do_bootm(struct cmd_tbl *cmdtp, int flag, int argc, char *const argv[])
 
 #else
 
-	switch (genimg_get_format((const void *)image_load_addr)) {
+	/*
+	 * Authenticate the image bootm was actually given. The stock code
+	 * always looked at image_load_addr, which is wrong whenever the
+	 * boot script loads the image elsewhere (e.g. a signed FIT at
+	 * fit_addr_r). hextoul() stops at ':' or '#' config suffixes.
+	 */
+	ulong hab_img_addr = image_load_addr;
+
+	if (argc > 0)
+		hab_img_addr = hextoul(argv[0], NULL);
+
+	switch (genimg_get_format((const void *)hab_img_addr)) {
 #if defined(CONFIG_LEGACY_IMAGE_FORMAT)
 	case IMAGE_FORMAT_LEGACY:
-		if (authenticate_image(image_load_addr,
-			image_get_image_size((struct legacy_img_hdr *)image_load_addr)) != 0) {
+		if (authenticate_image(hab_img_addr,
+			image_get_image_size((struct legacy_img_hdr *)hab_img_addr)) != 0) {
 			printf("Authenticate uImage Fail, Please check\n");
 			return 1;
 		}
@@ -206,6 +218,20 @@ int do_bootm(struct cmd_tbl *cmdtp, int flag, int argc, char *const argv[])
 #ifdef CONFIG_ANDROID_BOOT_IMAGE
 	case IMAGE_FORMAT_ANDROID:
 		/* Do this authentication in boota command */
+		break;
+#endif
+#if defined(CONFIG_FIT)
+	case IMAGE_FORMAT_FIT:
+		/*
+		 * Signed FIT layout: fitImage padded to ALIGN_SIZE, then
+		 * IVT + CSF appended. authenticate_image() derives the same
+		 * IVT offset from the FIT total size.
+		 */
+		if (authenticate_image(hab_img_addr,
+			fdt_totalsize((const void *)hab_img_addr)) != 0) {
+			printf("Authenticate FIT Fail, Please check\n");
+			return 1;
+		}
 		break;
 #endif
 	default:
