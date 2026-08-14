@@ -12,6 +12,12 @@ config SYS_CONFIG_NAME
 config IMX_CONFIG
 	default "board/nxp/imx8mp_evk/imximage-8mp-lpddr4.cfg"
 
+config SWUPDATE
+	bool "Enable SWUpdate dual-copy A/B boot support"
+	help
+	  Enable SWUpdate dual-copy (A/B) OTA boot environment variables
+	  including bootslot selection, rollback, and bootcount support.
+
 config IMX8MP_GP5_LOCK_UPDATE
 	bool "Enable burn GP5_LOCK fuse at boot"
 	help
