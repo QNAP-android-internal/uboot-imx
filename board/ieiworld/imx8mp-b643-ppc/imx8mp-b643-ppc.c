@@ -377,6 +377,12 @@ int board_late_init(void)
 	env_set("board_rev", "iMX8MP");
 #endif
 
+#if defined(CONFIG_ANDROID_SUPPORT) && !defined(CONFIG_XPL_BUILD)
+	/* uuu -e blanks the env; persist the default once so libubootenv can read it. */
+	if (gd->flags & GD_FLG_ENV_DEFAULT)
+		env_save();
+#endif
+
 	return 0;
 }
 
