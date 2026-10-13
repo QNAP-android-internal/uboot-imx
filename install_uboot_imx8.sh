@@ -98,16 +98,6 @@ install_firmware() {
 	PWD=$(pwd)
 	[ -n "${PWD##*imx-atf}" ] && cd imx-atf
 
-	# Patch for imx-atf: Fix compilation error for imx95
-	# This patch is specific for imx-atf with branch "lf_v2.12"
-	if [ ${SOC_DIR} == "iMX95" ]; then
-		if (git diff-index --quiet HEAD -- plat/imx/imx9/imx95/imx95_m7.c); then
-			sed -i '139a {
-			152i }
-			' plat/imx/imx9/imx95/imx95_m7.c
-		fi
-	fi
-
 	if [ ! -f build/${PLATFORM}/release/bl31.bin ]; then
 		rm -rf build
 		unset AS
