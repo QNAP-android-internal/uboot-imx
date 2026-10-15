@@ -32,10 +32,10 @@
 	#address-cells = <1>;
 	#size-cells = <0>;
 
-	hdmi@3d {
+	hdmi@41 {
 		compatible = "adi,adv7535";
-		reg = <0x3d>;
-		adi,addr-cec = <0x3c>;
+		reg = <0x41>;
+		adi,addr-cec = <0x41>;
 		adi,dsi-lanes = <4>;
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_mipi_dsi_csi>;
