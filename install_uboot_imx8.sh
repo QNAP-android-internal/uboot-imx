@@ -11,12 +11,12 @@
 
 DRIVE=/dev/sdX
 
-BRANCH_VER="lf-6.18.20_2.0.0" #branch used by imx-mkimage and imx-atf under meta-imx
+BRANCH_VER="lf-6.18.37_2.1.0" #branch used by imx-mkimage and imx-atf under meta-imx
 ATF_BRANCH_VER="lf_v2.14"
-MKIMAGE_SRC_GIT_ID='1b577853ae1afe1f26cdef27548da52fb424af48' #refer to 'imx-mkimage_git.inc' in Yocto
-ATF_SRC_GIT_ID='0779f89a5475a03193f7707f3bbb50cec11707c0'     #refer to 'imx-atf_2.12.bb' in Yocto
-DDR_FW_VER="8.32-1991416"                                     #refer to the name of 'firmware-imx-8m_8.x.bb'
-ELE_FW_VER="2.0.6-c0b284c"                                    ##refer to the "{PV of firmware-ele-imx_2.0.2.bb}"-"{IMX_SRCREV_ABBREV}"
+MKIMAGE_SRC_GIT_ID='b1f801d30cf30a5d8b8dff36f8e1acafa242d53f' #refer to 'imx-mkimage_git.inc' in Yocto
+ATF_SRC_GIT_ID='af9eb2c1748ee3abc0ead7dc76e462f50c573036'     #refer to 'imx-atf_2.12.bb' in Yocto
+DDR_FW_VER="8.33-7ce4783"                                     #refer to the name of 'firmware-imx-8m_8.x.bb'
+ELE_FW_VER="2.0.7-0265375"                                    ##refer to the "{PV of firmware-ele-imx_2.0.2.bb}"-"{IMX_SRCREV_ABBREV}"
 
 FSL_MIRROR="https://www.nxp.com/lgfiles/NMG/MAD/YOCTO"
 FIRMWARE_DIR="imx-boot_generation"
