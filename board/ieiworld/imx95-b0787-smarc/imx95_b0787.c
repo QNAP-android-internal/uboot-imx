@@ -21,6 +21,7 @@
 #include "../dts/upstream/src/arm64/freescale/imx95-power.h"
 #include <asm/arch/sys_proto.h>
 #include <i2c.h>
+#include <net.h>
 #include <dm/uclass.h>
 #include <dm/uclass-internal.h>
 #ifdef CONFIG_SWUPDATE
@@ -463,10 +464,61 @@ int board_init(void)
 	return 0;
 }
 
+/* I2C bus seq 2 = alias i2c2 = &lpi2c3 (i2c@42530000), see imx95-iei-smarc.dts */
+#define MAC_EEPROM_BUS		2
+#define MAC_EEPROM_ADDR		0x50
+#define MAC_EEPROM_OFFSET	0x80
+#define MAC_EEPROM_STRIDE	8
+
+static void setup_mac_from_eeprom(void)
+{
+	static const char * const envnames[] = { "ethaddr", "eth1addr" };
+	u8 buf[MAC_EEPROM_STRIDE * ARRAY_SIZE(envnames)];
+	struct udevice *dev;
+	u8 cur[ARP_HLEN];
+	int i, ret;
+
+	ret = i2c_get_chip_for_busnum(MAC_EEPROM_BUS, MAC_EEPROM_ADDR, 2, &dev);
+	if (ret) {
+		printf("MAC EEPROM: no device on i2c%d@0x%02x (%d)\n",
+		       MAC_EEPROM_BUS, MAC_EEPROM_ADDR, ret);
+		return;
+	}
+
+	ret = dm_i2c_read(dev, MAC_EEPROM_OFFSET, buf, sizeof(buf));
+	if (ret) {
+		printf("MAC EEPROM: read failed (%d)\n", ret);
+		return;
+	}
+
+	for (i = 0; i < ARRAY_SIZE(envnames); i++) {
+		u8 *mac = &buf[i * MAC_EEPROM_STRIDE];
+
+		if (!is_valid_ethaddr(mac)) {
+			printf("MAC EEPROM: %s not programmed\n", envnames[i]);
+			continue;
+		}
+
+		if (eth_env_get_enetaddr(envnames[i], cur) &&
+		    !memcmp(cur, mac, ARP_HLEN))
+			continue;
+
+		ret = eth_env_set_enetaddr(envnames[i], mac);
+		if (ret) {
+			printf("MAC EEPROM: failed to set %s = %pM (%d)\n",
+			       envnames[i], mac, ret);
+			continue;
+		}
+		printf("MAC EEPROM: %s = %pM\n", envnames[i], mac);
+	}
+}
+
 int board_late_init(void)
 {
 	if (IS_ENABLED(CONFIG_ENV_IS_IN_MMC))
 		board_late_mmc_env_init();
+
+	setup_mac_from_eeprom();
 
 	env_set("sec_boot", "no");
 #ifdef CONFIG_AHAB_BOOT
