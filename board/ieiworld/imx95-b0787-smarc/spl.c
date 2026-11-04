@@ -47,33 +47,6 @@ void spl_board_init(void)
 		printf("Fail to start RNG: %d\n", ret);
 }
 
-static void flexspi_nor_reset(void)
-{
-	int ret;
-	struct gpio_desc desc;
-
-	/* 15x15 EVK use M.2 QSPI card, not support booting */
-	if (IS_ENABLED(CONFIG_TARGET_IMX95_15X15_EVK))
-		return;
-
-	ret = dm_gpio_lookup_name("GPIO5_11", &desc);
-	if (ret) {
-		printf("%s lookup GPIO5_11 failed ret = %d\n", __func__, ret);
-		return;
-	}
-
-	ret = dm_gpio_request(&desc, "XSPI_RST_B");
-	if (ret) {
-		printf("%s request XSPI_RST_B failed ret = %d\n", __func__, ret);
-		return;
-	}
-
-	/* assert the XSPI_RST_B */
-	dm_gpio_set_dir_flags(&desc, GPIOD_IS_OUT | GPIOD_IS_OUT_ACTIVE | GPIOD_ACTIVE_LOW);
-	udelay(200); /* 50 ns at least, so use 200ns */
-	dm_gpio_set_value(&desc, 0); /* deassert the XSPI_RST_B */
-}
-
 void board_init_f(ulong dummy)
 {
 	int ret;
@@ -111,8 +84,6 @@ void board_init_f(ulong dummy)
 
 	/* Will set ARM freq to max rate */
 	clock_init_late();
-
-	flexspi_nor_reset();
 
 	board_init_r(NULL, 0);
 }
