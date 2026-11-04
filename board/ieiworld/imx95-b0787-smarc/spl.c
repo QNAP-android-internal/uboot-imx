@@ -47,6 +47,40 @@ void spl_board_init(void)
 		printf("Fail to start RNG: %d\n", ret);
 }
 
+static void tpm_reset(void)
+{
+	int ret;
+	struct gpio_desc desc;
+
+	ret = dm_gpio_lookup_name("GPIO5_10", &desc);
+	if (ret) {
+		printf("%s lookup GPIO5_10 failed ret = %d\n", __func__, ret);
+		return;
+	}
+
+	ret = dm_gpio_request(&desc, "TPM_RST");
+	if (ret) {
+		printf("%s request TPM_RST failed ret = %d\n", __func__, ret);
+		return;
+	}
+
+	/* TPM_RST has no external pull-up; the pad resets with a pull-down */
+	ret = dm_gpio_set_dir_flags(&desc, GPIOD_IS_OUT | GPIOD_IS_OUT_ACTIVE | GPIOD_ACTIVE_LOW);
+	if (ret) {
+		printf("%s assert TPM_RST failed ret = %d\n", __func__, ret);
+		goto out;
+	}
+
+	mdelay(10);
+
+	ret = dm_gpio_set_value(&desc, 0);
+	if (ret)
+		printf("%s deassert TPM_RST failed ret = %d\n", __func__, ret);
+
+out:
+	dm_gpio_free(desc.dev, &desc);
+}
+
 void board_init_f(ulong dummy)
 {
 	int ret;
@@ -84,6 +118,8 @@ void board_init_f(ulong dummy)
 
 	/* Will set ARM freq to max rate */
 	clock_init_late();
+
+	tpm_reset();
 
 	board_init_r(NULL, 0);
 }
