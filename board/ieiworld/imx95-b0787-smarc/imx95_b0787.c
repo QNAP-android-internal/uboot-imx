@@ -28,6 +28,9 @@
 #include <version.h>
 #include <timestamp.h>
 #endif
+#include <asm/global_data.h>
+
+DECLARE_GLOBAL_DATA_PTR;
 
 extern int board_fix_fdt_fuse(void *fdt);
 
@@ -517,6 +520,12 @@ int board_late_init(void)
 {
 	if (IS_ENABLED(CONFIG_ENV_IS_IN_MMC))
 		board_late_mmc_env_init();
+
+#if !defined(CONFIG_XPL_BUILD)
+	/* A blank env area leaves libubootenv unable to read it; persist the default once. */
+	if (gd->flags & GD_FLG_ENV_DEFAULT)
+		env_save();
+#endif
 
 	setup_mac_from_eeprom();
 
