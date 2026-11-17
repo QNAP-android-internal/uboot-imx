@@ -78,6 +78,9 @@ enum overlay_type {
 #if defined(CONFIG_TARGET_IMX8MP_B643_PPC)
 	DSI_10_TQ101AJ02_8MP = 1,
 #endif
+#if defined(CONFIG_TARGET_IMX95_B0787)
+	CAM_OV5640_95 = 1,
+#endif
 };
 #endif
 
@@ -1234,6 +1237,11 @@ int do_boota(struct cmd_tbl *cmdtp, int flag, int argc, char * const argv[]) {
 			dtbo_idx = DSI_10_TQ101AJ02_8MP;
 		} else
 #endif
+#if defined(CONFIG_TARGET_IMX95_B0787)
+		if (strcmp(dtbo_token, "ov5640") == 0) {
+			dtbo_idx = CAM_OV5640_95;
+		} else
+#endif
 		{
 			dtbo_idx = NO_OVERLAY;
 		}
@@ -1260,6 +1268,23 @@ int do_boota(struct cmd_tbl *cmdtp, int flag, int argc, char * const argv[]) {
 				printf("ANDROID: fdt overlay OK\n");
 			else
 				printf("ANDROID: fdt overlay failed, ret=%d\n", ret);
+#if defined(CONFIG_TARGET_IMX95_B0787)
+			if (!ret && dtbo_idx == CAM_OV5640_95) {
+				int node;
+
+				ret = fdt_increase_size((void *)(ulong)fdt_addr, 64);
+				if (!ret) {
+					node = fdt_path_offset((void *)(ulong)fdt_addr, "/firmware/android");
+					if (node < 0)
+						ret = node;
+					else
+						ret = fdt_setprop_string((void *)(ulong)fdt_addr, node,
+									 "camera.layout", "ov5640");
+				}
+				if (ret)
+					printf("ANDROID: set camera.layout failed, ret=%d\n", ret);
+			}
+#endif
 		}
 	}
 
