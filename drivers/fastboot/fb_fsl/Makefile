@@ -11,4 +11,5 @@ obj-y += fb_fsl_dev.o fb_fsl_boot.o fb_fsl_command.o fb_fsl_common.o fb_fsl_getv
 obj-$(CONFIG_FASTBOOT_LOCK) += fastboot_lock_unlock.o
 obj-$(CONFIG_BCB_SUPPORT) += command.o bcb.o
 obj-$(CONFIG_VIRTUAL_AB_SUPPORT) += fb_fsl_virtual_ab.o
+obj-$(CONFIG_OF_LIBFDT_OVERLAY) += fb_android_dtbo.o
 endif

@@ -50,6 +50,7 @@
 #endif
 
 #include "fb_fsl_common.h"
+#include "fb_android_dtbo.h"
 
 #ifdef CONFIG_IMX_ANDROID_GBL
 #include <fs.h>
@@ -1202,6 +1203,10 @@ int do_boota(struct cmd_tbl *cmdtp, int flag, int argc, char * const argv[]) {
 			kernel_addr = (ulong)(hdr->kernel_addr - hdr->page_size);
 		}
 	}
+
+#ifdef CONFIG_OF_LIBFDT_OVERLAY
+	android_apply_dtoverlay(dt_img, fdt_addr);
+#endif
 
 	/* Show orange warning for unlocked device, press power button to skip. */
 #ifdef CONFIG_AVB_WARNING_LOGO
