@@ -19,8 +19,6 @@
 #include <asm/setup.h>
 #include <env.h>
 #include <u-boot/lz4.h>
-#include <fdt_support.h>
-#include <linux/libfdt.h>
 #include <linux/delay.h>
 #include "../lib/avb/fsl/utils.h"
 
@@ -71,18 +69,6 @@ boot_metric metrics = {
   .odt	 = 0,
   .sw	 = 0
 };
-
-#ifdef CONFIG_OF_LIBFDT_OVERLAY
-enum overlay_type {
-	NO_OVERLAY = 0,
-#if defined(CONFIG_TARGET_IMX8MP_B643_PPC)
-	DSI_10_TQ101AJ02_8MP = 1,
-#endif
-#if defined(CONFIG_TARGET_IMX95_B0787)
-	CAM_OV5640_95 = 1,
-#endif
-};
-#endif
 
 int read_from_partition_multi(const char* partition,
 		int64_t offset, size_t num_bytes, void* buffer, size_t* out_num_read)
@@ -1214,77 +1200,6 @@ int do_boota(struct cmd_tbl *cmdtp, int flag, int argc, char * const argv[]) {
 			android_image_get_kernel(hdr, NULL, 0, NULL, NULL);
 		} else {
 			kernel_addr = (ulong)(hdr->kernel_addr - hdr->page_size);
-		}
-	}
-
-	ulong *dtbo_addr = NULL;
-	struct dt_table_entry *dt_entry_overlay = NULL;
-	enum overlay_type dtbo_idx = NO_OVERLAY;
-	u32 fdt_overlay_size = 0;
-	int ret;
-	char overlay_name[128] = {0};
-	char *overlay_name_ptr = NULL, *dtbo_token = NULL;
-
-	overlay_name_ptr = env_get("dtoverlay");
-	if (overlay_name_ptr)
-		strlcpy(overlay_name, overlay_name_ptr, sizeof(overlay_name));
-	dtbo_token = strtok(overlay_name, " ");
-
-	while(dtbo_token != NULL) {
-
-#if defined(CONFIG_TARGET_IMX8MP_B643_PPC)
-		if (strcmp(dtbo_token, "dsi-tq101aj02") == 0) {
-			dtbo_idx = DSI_10_TQ101AJ02_8MP;
-		} else
-#endif
-#if defined(CONFIG_TARGET_IMX95_B0787)
-		if (strcmp(dtbo_token, "ov5640") == 0) {
-			dtbo_idx = CAM_OV5640_95;
-		} else
-#endif
-		{
-			dtbo_idx = NO_OVERLAY;
-		}
-
-		dtbo_token = strtok(NULL, " ");
-
-		if( dtbo_idx != NO_OVERLAY ) {
-			dt_entry_overlay = (struct dt_table_entry *)((ulong)dt_img +
-			be32_to_cpu(dt_img->dt_entries_offset) + (u32)dtbo_idx * be32_to_cpu(dt_img->dt_entry_size));
-
-			fdt_overlay_size = be32_to_cpu(dt_entry_overlay->dt_size);
-			dtbo_addr = fdt_addr + 0xF0000;
-			memcpy((void *)(ulong)dtbo_addr, (void *)((ulong)dt_img +
-			be32_to_cpu(dt_entry_overlay->dt_offset)), fdt_overlay_size);
-			ret = fdt_increase_size((void *)(ulong)fdt_addr, fdt_overlay_size);
-
-			if(!ret)
-				printf("ANDROID: fdt increase OK\n");
-			else
-				printf("ANDROID: fdt increase failed, ret=%d\n", ret);
-
-			ret = fdt_overlay_apply((void *)fdt_addr, (void *)dtbo_addr);
-			if(!ret)
-				printf("ANDROID: fdt overlay OK\n");
-			else
-				printf("ANDROID: fdt overlay failed, ret=%d\n", ret);
-#if defined(CONFIG_TARGET_IMX95_B0787)
-			if (!ret && dtbo_idx == CAM_OV5640_95) {
-				int node;
-
-				ret = fdt_increase_size((void *)(ulong)fdt_addr, 64);
-				if (!ret) {
-					node = fdt_path_offset((void *)(ulong)fdt_addr, "/firmware/android");
-					if (node < 0)
-						ret = node;
-					else
-						ret = fdt_setprop_string((void *)(ulong)fdt_addr, node,
-									 "camera.layout", "ov5640");
-				}
-				if (ret)
-					printf("ANDROID: set camera.layout failed, ret=%d\n", ret);
-			}
-#endif
 		}
 	}
 
