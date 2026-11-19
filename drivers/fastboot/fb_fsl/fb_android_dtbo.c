@@ -33,6 +33,8 @@ static const struct dtoverlay_prop dtoverlay_props[] = {
 #if defined(CONFIG_TARGET_IMX95_B0787)
 	{ "imx95-smarc-ov5640", "camera.layout", "ov5640" },
 	{ "imx95-smarc-lvds-g121xcel01", "lcd_density", "240" },
+	{ "imx95-smarc-mipi2hdmi-lt9611uxd-4k", "displaymode", "4kp30" },
+	{ "imx95-smarc-mipi2hdmi-lt9611uxd-4k", "lcd_density", "640" },
 #endif
 	{ NULL, NULL, NULL }
 };
