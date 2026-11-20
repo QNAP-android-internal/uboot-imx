@@ -36,6 +36,7 @@ static const struct dtoverlay_prop dtoverlay_props[] = {
 	{ "imx95-smarc-mipi2hdmi-lt9611uxd-4k", "displaymode", "4kp30" },
 	{ "imx95-smarc-mipi2hdmi-lt9611uxd-4k", "lcd_density", "640" },
 	{ "imx95-smarc-imx219", "camera.layout", "imx219" },
+	{ "imx95-smarc-imx708", "camera.layout", "imx708" },
 #endif
 	{ NULL, NULL, NULL }
 };
