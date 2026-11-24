@@ -63,6 +63,7 @@ setup_platform() {
 		IMX_BOOT_SEEK="32"
 		MKIMAGE_TARGET="flash_a55"
 		RAM_SIZE=${RAM_SIZE:-16gb}
+		ATF_SYS_PWR_FULL_CTRL="1"
 		;;
 	*)
 		printf "Target SOC isn't supported by this script\n"
@@ -102,7 +103,9 @@ install_firmware() {
 		rm -rf build
 		unset AS
 		unset LD
-		make PLAT=${PLATFORM} IMX_BOOT_UART_BASE=${ATF_BOOT_UART_BASE} bl31 || printf "Fails to build ATF firmware \n"
+		make PLAT=${PLATFORM} IMX_BOOT_UART_BASE=${ATF_BOOT_UART_BASE} \
+			SYS_PWR_FULL_CTRL=${ATF_SYS_PWR_FULL_CTRL} bl31 || \
+			printf "Fails to build ATF firmware \n"
 	fi
 	if [ -f build/${PLATFORM}/release/bl31.bin ]; then
 		printf "Copy build/${PLATFORM}/release/bl31.bin to $MKIMAGE_DIR \n"
